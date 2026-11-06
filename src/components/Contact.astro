@@ -104,6 +104,17 @@ const cards = lang === 'en' ? [waCard, mailCard, phoneCard] : [phoneCard, waCard
             <Icon name="mdi:email-outline" aria-hidden="true" /><span>{f.sendEmail}</span>
           </button>
         </div>
+        <div class="quote__fallback" data-email-fallback hidden>
+          <p>{f.emailFallback} <a href={`mailto:${business.email}`}>{business.email}</a>.</p>
+          <div class="quote__fallback-actions">
+            <a class="btn btn--outline btn--sm" href="#" target="_blank" rel="noopener" data-gmail>
+              <Icon name="mdi:gmail" aria-hidden="true" /><span>{f.openGmail}</span>
+            </a>
+            <button class="btn btn--outline btn--sm" type="button" data-copy data-copied={f.copied}>
+              <Icon name="mdi:content-copy" aria-hidden="true" /><span data-copy-label>{f.copy}</span>
+            </button>
+          </div>
+        </div>
         <noscript><p class="quote__noscript">{f.noscript}</p></noscript>
       </form>
     </div>
@@ -111,7 +122,7 @@ const cards = lang === 'en' ? [waCard, mailCard, phoneCard] : [phoneCard, waCard
 </section>
 
 <script>
-  import { buildQuoteMessage, mailtoLink, whatsappLink, type Lang } from '../lib/contact';
+  import { buildQuoteMessage, gmailLink, mailtoLink, whatsappLink, type Lang } from '../lib/contact';
 
   document.querySelectorAll<HTMLFormElement>('[data-quote]').forEach((form) => {
     const dateInput = form.querySelector<HTMLInputElement>('input[name="date"]');
@@ -119,20 +130,59 @@ const cards = lang === 'en' ? [waCard, mailCard, phoneCard] : [phoneCard, waCard
       const now = new Date();
       dateInput.min = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
     }
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const submitter = (e as SubmitEvent).submitter as HTMLButtonElement | null;
+    const fallback = form.querySelector<HTMLElement>('[data-email-fallback]');
+    const gmail = form.querySelector<HTMLAnchorElement>('[data-gmail]');
+    const copyBtn = form.querySelector<HTMLButtonElement>('[data-copy]');
+    const copyLabel = form.querySelector<HTMLElement>('[data-copy-label]');
+    let lastMessage = '';
+
+    const compose = () => {
       const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
-      const lang = (form.dataset.lang as Lang) ?? 'sk';
       if (data.date) {
         const [y, m, d] = data.date.split('-');
         data.date = `${Number(d)}. ${Number(m)}. ${y}`;
       }
-      const message = buildQuoteMessage(data, lang);
+      return buildQuoteMessage(data, (form.dataset.lang as Lang) ?? 'sk');
+    };
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const submitter = (e as SubmitEvent).submitter as HTMLButtonElement | null;
+      const message = compose();
+      const subject = form.dataset.subject ?? '';
       if (submitter?.value === 'email') {
-        window.location.href = mailtoLink(form.dataset.subject ?? '', message);
+        lastMessage = message;
+        // Opens the default mail app. If none is set up (common on Windows with web-only Gmail),
+        // nothing visible happens – so always show the Gmail / copy fallback as well.
+        const a = document.createElement('a');
+        a.href = mailtoLink(subject, message);
+        a.click();
+        if (gmail) gmail.href = gmailLink(subject, message);
+        if (fallback) {
+          fallback.hidden = false;
+          fallback.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
       } else {
         window.open(whatsappLink(message), '_blank', 'noopener');
+      }
+    });
+
+    copyBtn?.addEventListener('click', async () => {
+      const text = lastMessage || compose();
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+      }
+      if (copyLabel && copyBtn.dataset.copied) {
+        const original = copyLabel.textContent;
+        copyLabel.textContent = copyBtn.dataset.copied;
+        setTimeout(() => (copyLabel.textContent = original), 2000);
       }
     });
   });
@@ -296,6 +346,20 @@ const cards = lang === 'en' ? [waCard, mailCard, phoneCard] : [phoneCard, waCard
     flex-wrap: wrap;
     gap: 12px;
     margin-top: 22px;
+  }
+  .quote__fallback {
+    margin-top: 18px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    background: var(--bg-alt);
+    color: var(--ink);
+    font-size: 0.93rem;
+  }
+  .quote__fallback-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
   }
   .quote__noscript {
     margin-top: 12px;

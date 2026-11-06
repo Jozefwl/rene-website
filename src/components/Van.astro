@@ -1,5 +1,6 @@
 ---
-// Side view of René's van: white Peugeot Boxer L4H2 (long body, high roof).
+// Side view of René's van: white Peugeot Boxer L4H2 (long body, high roof, doors only at the rear),
+// with an R&R livery in the style of his business card.
 // Drawn to scale: 100 units ≈ 1 m (length 6.36 m, height 2.52 m). Facing left.
 interface Props {
   id: string;
@@ -11,82 +12,134 @@ interface Props {
 
 const { id, label, class: className, dims } = Astro.props;
 const viewBox = dims ? '-10 -56 724 322' : '-10 -6 660 272';
-const spokes = [0, 60, 120];
 const wheels = [97, 501];
+const bolts = [0, 60, 120, 180, 240, 300];
 ---
 
 <svg class:list={['van', className]} viewBox={viewBox} role="img" aria-label={label} xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id={`${id}-body`} x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ffffff"></stop>
-      <stop offset="0.75" stop-color="#f3f4f6"></stop>
-      <stop offset="1" stop-color="#dcdfe3"></stop>
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.55" stop-color="#f7f8f9"/>
+      <stop offset="0.8" stop-color="#eceef1"/>
+      <stop offset="1" stop-color="#d6d9de"/>
+    </linearGradient>
+    <linearGradient id={`${id}-sheen`} x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="0.45" stop-color="#fff" stop-opacity="0.35"/>
+      <stop offset="0.55" stop-color="#fff" stop-opacity="0"/>
     </linearGradient>
     <linearGradient id={`${id}-glass`} x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#4a5560"></stop>
-      <stop offset="1" stop-color="#1d2329"></stop>
+      <stop offset="0" stop-color="#55626e"/>
+      <stop offset="0.6" stop-color="#262d34"/>
+      <stop offset="1" stop-color="#1a1f24"/>
     </linearGradient>
+    <linearGradient id={`${id}-decal`} x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#e32b2b"/>
+      <stop offset="1" stop-color="#c91f1f"/>
+    </linearGradient>
+    <radialGradient id={`${id}-rim`} cx="0.45" cy="0.4" r="0.7">
+      <stop offset="0" stop-color="#e3e6ea"/>
+      <stop offset="0.7" stop-color="#a7adb4"/>
+      <stop offset="1" stop-color="#7d838a"/>
+    </radialGradient>
+    <clipPath id={`${id}-bodyclip`}>
+      <path d="M8 226 C4 214 3 200 5 186 C7 172 10 163 18 156 C40 146 78 136 116 128 L164 58 C170 48 178 40 192 34 L232 14 C240 9 248 6 262 6 L622 6 C632 6 636 12 636 20 L636 220 C636 226 632 230 626 230 L548 230 A46 46 0 0 0 454 230 L144 230 A46 46 0 0 0 50 230 Z"/>
+    </clipPath>
   </defs>
 
-  <ellipse class="van-shadow" cx="320" cy="258" rx="318" ry="7" fill="#000" opacity=".18"></ellipse>
+  <ellipse cx="322" cy="259" rx="320" ry="7" fill="#000" opacity=".2"/>
 
   <g class="van-body">
-    <g fill="#16181b">
-      <path d="M50 230 A47 47 0 0 1 144 230 Z"></path>
-      <path d="M454 230 A47 47 0 0 1 548 230 Z"></path>
+    <!-- wheel wells -->
+    <g fill="#141619">
+      <path d="M50 230 A47 47 0 0 1 144 230 Z"/>
+      <path d="M454 230 A47 47 0 0 1 548 230 Z"/>
     </g>
-    <path
-      d="M8 226 C4 214 3 200 5 186 C7 172 10 163 18 156 C40 146 78 136 116 128 L164 58 C170 48 178 40 192 34 L232 14 C240 9 248 6 262 6 L622 6 C632 6 636 12 636 20 L636 220 C636 226 632 230 626 230 L548 230 A46 46 0 0 0 454 230 L144 230 A46 46 0 0 0 50 230 Z"
-      fill={`url(#${id}-body)`}
-      stroke="#b9bec5"
-      stroke-width="1.5"
-      stroke-linejoin="round"></path>
-    <path d="M116 128 L164 58 C168 52 172 48 178 45 L174 50 L126 126 Z" fill={`url(#${id}-glass)`}></path>
-    <path d="M132 126 L174 62 C178 56 184 53 192 53 L226 53 L226 126 Z" fill={`url(#${id}-glass)`}></path>
-    <g stroke="#c4c8ce" stroke-width="2">
-      <path d="M230 30 L230 228"></path>
-      <path d="M126 130 L126 228"></path>
-      <path d="M410 12 L410 228"></path>
-      <path d="M630 10 L630 226" stroke-width="1.5"></path>
-      <path d="M232 22 L404 22" stroke-width="1.5"></path>
+    <!-- body shell -->
+    <path d="M8 226 C4 214 3 200 5 186 C7 172 10 163 18 156 C40 146 78 136 116 128 L164 58 C170 48 178 40 192 34 L232 14 C240 9 248 6 262 6 L622 6 C632 6 636 12 636 20 L636 220 C636 226 632 230 626 230 L548 230 A46 46 0 0 0 454 230 L144 230 A46 46 0 0 0 50 230 Z"
+          fill={`url(#${id}-body)`} stroke="#b4b9c0" stroke-width="1.5" stroke-linejoin="round"/>
+
+    <g clip-path={`url(#${id}-bodyclip)`}>
+      <!-- roof edge highlight and body crease -->
+      <path d="M240 16 L630 16" stroke="#ffffff" stroke-width="3" opacity=".9"/>
+      <path d="M126 176 L636 176" stroke="#d9dce1" stroke-width="1.5"/>
+
+      <!-- livery decal: speed stripes from the rear, like the business card -->
+      <g fill={`url(#${id}-decal)`}>
+        <rect x="488" y="34" width="170" height="13" rx="6.5"/>
+        <rect x="430" y="56" width="230" height="22" rx="11"/>
+        <rect x="520" y="87" width="140" height="13" rx="6.5"/>
+        <rect x="456" y="109" width="210" height="26" rx="13"/>
+        <rect x="540" y="144" width="120" height="13" rx="6.5"/>
+      </g>
+      <!-- lettering -->
+      <g font-family="Poppins, Arial, sans-serif" font-weight="800">
+        <text x="262" y="78" font-size="50" fill="#e32b2b" letter-spacing="-0.5">R&amp;R</text>
+        <text x="263" y="108" font-size="23.5" fill="#2a2a2a" letter-spacing="2.2">AUTODOPRAVA</text>
+        <text x="263" y="140" font-size="15" font-weight="700" fill="#2a2a2a" letter-spacing="0.6">ROZVOZ TOVARU · SŤAHOVANIE</text>
+        <rect x="262" y="149" width="170" height="24" rx="12" fill="#e32b2b"/>
+        <text x="347" y="166" font-size="14.5" font-weight="700" fill="#fff" text-anchor="middle" letter-spacing="0.4">+421 949 320 426</text>
+      </g>
+
+      <!-- sheen over everything so decals look applied to the paint -->
+      <rect x="-20" y="0" width="700" height="240" fill={`url(#${id}-sheen)`} transform="skewX(-25)" opacity=".45"/>
     </g>
-    <rect x="410" y="98" width="214" height="4" rx="2" fill="#c4c8ce"></rect>
+
+    <!-- glass -->
+    <path d="M117 128 L164 59 C168 53 172 49 178 46 L175 51 L127 126 Z" fill={`url(#${id}-glass)`}/>
+    <path d="M133 126 L174 63 C178 57 184 54 192 54 L224 54 L224 126 Z" fill={`url(#${id}-glass)`}/>
+    <path d="M140 118 L176 66 L190 66 L152 122 Z" fill="#fff" opacity=".08"/>
+
+    <!-- panel seams: cab door only; cargo side is one panel (doors only at the rear) -->
+    <g stroke="#c2c7cd" stroke-width="1.6" fill="none">
+      <path d="M126 130 L126 229"/>
+      <path d="M229 40 L229 229"/>
+      <path d="M630 10 L630 228"/>
+    </g>
+    <!-- rear door hinges -->
     <g fill="#2b2f34">
-      <rect x="200" y="140" width="20" height="5" rx="2.5"></rect>
-      <rect x="240" y="140" width="20" height="5" rx="2.5"></rect>
-      <path d="M144 196 L454 196 L454 212 L144 212 Z"></path>
-      <path d="M548 196 L634 196 L634 212 L548 212 Z"></path>
-      <path d="M6 190 L58 190 C56 196 53 204 51 212 L50 230 L8 226 C5 216 4 204 6 190 Z"></path>
-      <path d="M6 174 L20 172 L20 186 L6 188 Z"></path>
-      <path d="M120 96 L132 92 L136 124 L124 126 Z"></path>
-      <path d="M554 214 L636 214 L636 222 C636 227 632 230 627 230 L554 230 Z"></path>
+      <rect x="626" y="36" width="10" height="9" rx="2"/>
+      <rect x="626" y="118" width="10" height="9" rx="2"/>
+      <rect x="626" y="186" width="10" height="9" rx="2"/>
     </g>
-    <g fill="none" stroke="#2b2f34" stroke-width="7">
-      <path d="M44 230 A52 52 0 0 1 150 230"></path>
-      <path d="M448 230 A52 52 0 0 1 554 230"></path>
+    <!-- cab door handle -->
+    <rect x="198" y="138" width="22" height="6" rx="3" fill="#2b2f34"/>
+
+    <!-- black plastics: side strip, bumpers, arches, mirror, grille -->
+    <g fill="#2b2f34">
+      <path d="M144 194 L454 194 L454 212 L144 212 Z"/>
+      <path d="M548 194 L634 194 L634 212 L548 212 Z"/>
+      <path d="M6 190 L58 190 C56 196 53 204 51 212 L50 230 L8 226 C5 216 4 204 6 190 Z"/>
+      <path d="M554 214 L636 214 L636 222 C636 227 632 230 627 230 L554 230 Z"/>
+      <path d="M6 173 L22 170 L22 186 L6 188 Z"/>
+      <path d="M116 92 L131 88 C134 88 136 90 136 93 L138 122 C138 125 136 126 133 126 L124 127 Z"/>
     </g>
-    <path class="van-headlight" d="M14 158 C30 152 52 147 74 143 L70 158 C52 161 32 165 12 170 Z" fill="#e4eaf1" stroke="#9aa3ad" stroke-width="1"></path>
-    <path d="M70 146 L82 143 L79 156 L68 158 Z" fill="#f6a23a"></path>
-    <rect x="628" y="150" width="8" height="36" rx="2" fill="#d6262b"></rect>
-    <g font-family="Poppins, Arial, sans-serif" font-weight="800" text-anchor="middle" aria-hidden="true">
-      <text x="420" y="138" font-size="34" fill="#e32b2b">R&amp;R</text>
-      <text x="420" y="166" font-size="22" fill="#2a2a2a" letter-spacing="1">AUTODOPRAVA</text>
+    <g fill="none" stroke="#2b2f34" stroke-width="7" stroke-linecap="round">
+      <path d="M45 229 A52 52 0 0 1 149 229"/>
+      <path d="M449 229 A52 52 0 0 1 553 229"/>
     </g>
+    <!-- lights -->
+    <path d="M13 158 C30 151 54 146 78 141 C80 141 81 143 80 145 L74 158 C52 162 32 166 12 171 Z" fill="#e8eef4" stroke="#8f98a2" stroke-width="1"/>
+    <path d="M20 160 C34 156 50 152 66 149" stroke="#b9c3cd" stroke-width="2" fill="none"/>
+    <path d="M70 147 L79 145 L75 156 L68 157 Z" fill="#f2a23c"/>
+    <rect x="629" y="146" width="7" height="40" rx="2" fill="#cf2027"/>
+    <rect x="629" y="146" width="7" height="12" rx="2" fill="#f2a23c"/>
   </g>
 
   {
     wheels.map((x) => (
       <g transform={`translate(${x} 222)`}>
         <g class="van-wheel">
-          <circle r="36" fill="#1f2226" />
-          <circle r="22" fill="#9aa1a9" />
-          <circle r="22" fill="none" stroke="#6f767e" stroke-width="2" />
-          <g fill="#6f767e">
-            {spokes.map((a) => (
-              <rect x="-2.5" y="-20" width="5" height="40" rx="2" transform={`rotate(${a})`} />
+          <circle r="36" fill="#1b1d20" />
+          <circle r="32" fill="none" stroke="#2c2f33" stroke-width="3" />
+          <circle r="21" fill={`url(#${id}-rim)`} />
+          <g fill="#6c727a">
+            {bolts.map((a) => (
+              <circle cx="0" cy="-13" r="3.2" transform={`rotate(${a})`} />
             ))}
           </g>
-          <circle r="6" fill="#4b5158" />
+          <circle r="6.5" fill="#4a5057" />
         </g>
       </g>
     ))
@@ -102,7 +155,6 @@ const wheels = [97, 501];
           <path d="M662 14 L662 202" />
           <path d="M650 14 L674 14 M650 202 L674 202" />
           <path d="M654 28 L662 14 L670 28 M654 188 L662 202 L670 188" />
-          <path d="M232 14 L632 14 L632 202 L232 202 Z" stroke-dasharray="8 7" stroke-width="2" opacity=".55" />
         </g>
         <text x="432" y="-34" text-anchor="middle">{dims.length}</text>
         <text x="0" y="0" text-anchor="middle" transform="translate(698 108) rotate(-90)">{dims.height}</text>

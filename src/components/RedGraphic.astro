@@ -1,0 +1,77 @@
+---
+// The red "speed" graphic from René's business card: one connected red shape.
+// Rounded fingers reach in from the left; the white gaps between them end in rounded
+// inner corners. Built as a mask: white = red, black = cut-out gaps.
+type Band = ['finger', number, number, number] | ['gap', number, number, number] | ['pill', number, number, number, number];
+
+interface Props {
+  id: string;
+  class?: string;
+  width: number;
+  height: number;
+  /** finger: [y0, y1, leftX] · gap: [y0, y1, endX] · pill (detached): [y0, y1, x0, x1] */
+  bands: Band[];
+}
+const { id, class: className, width, height, bands } = Astro.props;
+const far = width + 400; // fingers run past the right edge
+const O = 2; // white shapes overlap their neighbours slightly, so no hairline seams show between bands
+
+let i = 0;
+const shapes = bands.map((b) => {
+  if (b[0] === 'finger') {
+    const [, y0, y1, x] = b;
+    return { kind: 'finger', x, y: y0, w: far - x, h: y1 - y0, r: Math.min((y1 - y0) / 2, 36), i: i++ };
+  }
+  if (b[0] === 'gap') {
+    const [, y0, y1, end] = b;
+    // moves with the finger above it during the slide-in
+    return { kind: 'gap', x: -200, y: y0, w: end + 200, h: y1 - y0, end, i: Math.max(i - 1, 0) };
+  }
+  const [, y0, y1, x0, x1] = b;
+  return { kind: 'pill', x: x0, y: y0, w: x1 - x0, h: y1 - y0, r: (y1 - y0) / 2, i: i++ };
+});
+---
+
+<svg
+  class:list={['red-graphic', className]}
+  viewBox={`0 0 ${width} ${height}`}
+  preserveAspectRatio="xMaxYMin slice"
+  aria-hidden="true"
+  focusable="false">
+  <defs>
+    <mask id={`${id}-mask`} maskUnits="userSpaceOnUse" x="-200" y="0" width={far + 400} height={height}>
+      {
+        shapes.map((s) =>
+          s.kind === 'gap' ? (
+            // red behind the rounded end of the gap, so the cut leaves rounded inner corners
+            <rect class="red-graphic__bar" style={`--i:${s.i}`} x={s.end - s.h} y={s.y - O} width={far} height={s.h + 2 * O} fill="#fff" />
+          ) : null,
+        )
+      }
+      {
+        shapes.map((s) =>
+          s.kind !== 'gap' ? (
+            <rect class="red-graphic__bar" style={`--i:${s.i}`} x={s.x} y={s.kind === 'finger' ? s.y - O : s.y} width={s.w} height={s.kind === 'finger' ? s.h + 2 * O : s.h} rx={s.r} fill="#fff" />
+          ) : null,
+        )
+      }
+      {shapes.map((s) => (s.kind === 'gap' ? <rect x={s.x} y={s.y} width={s.w} height={s.h} rx={s.h / 2} fill="#000" /> : null))}
+    </mask>
+    <linearGradient id={`${id}-fill`} x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e32b2b"></stop>
+      <stop offset="1" stop-color="#d21f24"></stop>
+    </linearGradient>
+  </defs>
+  <rect x="-200" y="0" width={far + 400} height={height} fill={`url(#${id}-fill)`} mask={`url(#${id}-mask)`}></rect>
+</svg>
+
+<style>
+  .red-graphic {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .red-graphic__bar {
+    transform-box: view-box;
+  }
+</style>

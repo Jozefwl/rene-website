@@ -55,3 +55,9 @@ export function whatsappLink(message?: string, number: string = business.whatsap
 export function mailtoLink(subject: string, body: string, to: string = business.email): string {
   return `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
+
+/** Gmail web compose link – works when no desktop mail app is set up. */
+export function gmailLink(subject: string, body: string, to: string = business.email): string {
+  const e = encodeURIComponent; // %20 for spaces (not "+"), which Gmail decodes reliably
+  return `https://mail.google.com/mail/?view=cm&fs=1&to=${e(to)}&su=${e(subject)}&body=${e(body)}`;
+}

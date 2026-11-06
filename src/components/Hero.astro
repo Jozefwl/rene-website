@@ -1,6 +1,9 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import Van from './Van.astro';
+import RedGraphic from './RedGraphic.astro';
 import { business } from '../data/business';
 import { whatsappLink } from '../lib/contact';
 import { useTranslations, type Lang } from '../i18n';
@@ -12,20 +15,38 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 const pointIcons = ['mdi:speedometer', 'mdi:shield-check', 'mdi:map-marker'];
 const wa = whatsappLink();
-// Stripes like on the business card: [top %, width %, height px]
-const stripes: [number, number, number][] = [
-  [6, 34, 30],
-  [17, 52, 40],
-  [31, 40, 34],
-  [44, 70, 46],
-  [59, 46, 34],
-  [71, 84, 52],
-];
+// Van photo: src/assets/van.png (transparent background). Without it, the drawn SVG van is used.
+const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/van.{png,webp}', { eager: true });
+const vanPhoto = Object.values(photos)[0]?.default;
+// Red graphic like on the business card (one connected shape, see RedGraphic.astro).
+const wideBands = [
+  ['finger', 0, 70, 560],
+  ['gap', 70, 118, 760],
+  ['finger', 118, 186, 400],
+  ['gap', 186, 234, 650],
+  ['finger', 234, 306, 250],
+  ['gap', 306, 352, 560],
+  ['finger', 352, 420, 360],
+  ['gap', 420, 466, 700],
+  ['finger', 466, 900, 600],
+  ['pill', 520, 566, 170, 560],
+  ['pill', 640, 688, 80, 520],
+] as const;
+const stageBands = [
+  ['finger', 0, 40, 470],
+  ['gap', 40, 66, 580],
+  ['finger', 66, 110, 420],
+  ['gap', 110, 136, 560],
+  ['finger', 136, 180, 440],
+  ['gap', 180, 206, 570],
+  ['finger', 206, 600, 300],
+  ['pill', 262, 292, 110, 250],
+] as const;
 ---
 
 <section class="hero" aria-labelledby="hero-title" data-hero>
   <div class="hero__stripes hero__stripes--wide" aria-hidden="true">
-    {stripes.map(([top, w, h], i) => <span class="stripe" style={`--top:${top}%;--w:${w}%;--h:${h}px;--i:${i}`} />)}
+    <RedGraphic id="red-wide" width={900} height={900} bands={wideBands as any} />
   </div>
 
   <div class="container hero__inner">
@@ -63,9 +84,9 @@ const stripes: [number, number, number][] = [
       <p class="hero__sub">{t.hero.sub}</p>
     </div>
 
-    <div class="hero__stage">
+    <div class:list={['hero__stage', { 'hero__stage--photo': vanPhoto }]}>
       <div class="hero__stripes hero__stripes--stage" aria-hidden="true">
-        {stripes.slice(1).map(([top, w, h], i) => <span class="stripe" style={`--top:${top - 12}%;--w:${w}%;--h:${Math.round(h * 0.6)}px;--i:${i}`} />)}
+        <RedGraphic id="red-stage" width={600} height={600} bands={stageBands as any} />
       </div>
       <svg class="hero__city" viewBox="0 0 600 220" aria-hidden="true" preserveAspectRatio="xMidYMax slice">
         <g fill="#c9ccd1">
@@ -82,10 +103,25 @@ const stripes: [number, number, number][] = [
       </svg>
       <div class="hero__road" aria-hidden="true"></div>
       <div class="hero__van">
+        {vanPhoto && <span class="hero__van-shadow" aria-hidden="true" />}
         <div class="hero__trail" aria-hidden="true">
           <span></span><span></span><span></span>
         </div>
-        <Van id="hero-van" label={t.a11y.vanAlt} class="hero__van-svg" />
+        {
+          vanPhoto ? (
+            <Image
+              src={vanPhoto}
+              alt={t.a11y.vanAlt}
+              class="hero__van-svg hero__van-photo"
+              widths={[480, 720, 960, 1280]}
+              sizes="(max-width: 900px) 90vw, 680px"
+              loading="eager"
+              fetchpriority="high"
+            />
+          ) : (
+            <Van id="hero-van" label={t.a11y.vanAlt} class="hero__van-svg" />
+          )
+        }
       </div>
     </div>
   </div>
@@ -126,23 +162,22 @@ const stripes: [number, number, number][] = [
   .hero__stripes--stage {
     display: none;
   }
-  .stripe {
-    position: absolute;
-    right: 0;
-    top: var(--top);
-    width: var(--w);
-    height: var(--h);
-    border-radius: var(--radius-pill) 0 0 var(--radius-pill);
-    background: var(--red);
-    animation: stripe-in 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-    animation-delay: calc(var(--i) * 70ms);
+  /* Whole graphic slides in from the right, the fingers follow a little staggered. */
+  .hero__stripes :global(.red-graphic) {
+    animation: graphic-in 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   }
-  .stripe:nth-child(n + 5) {
-    background: linear-gradient(90deg, var(--red) 0%, #d82626 100%);
+  .hero__stripes :global(.red-graphic__bar) {
+    animation: bar-in 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(0.1s + var(--i) * 60ms);
   }
-  @keyframes stripe-in {
+  @keyframes graphic-in {
     from {
-      transform: translateX(105%);
+      transform: translateX(70%);
+    }
+  }
+  @keyframes bar-in {
+    from {
+      transform: translateX(260px);
     }
   }
 
@@ -271,6 +306,36 @@ const stripes: [number, number, number][] = [
     width: 100%;
     height: auto;
     filter: drop-shadow(0 18px 18px rgba(20, 22, 26, 0.12));
+  }
+  /* Photo van (front three-quarter view, like on the business card) */
+  .hero__stage--photo .hero__van {
+    left: 6%;
+    right: -4%;
+    bottom: 6px;
+  }
+  .hero__van-photo {
+    position: relative;
+    z-index: 1;
+    animation: brake-photo 0.55s ease-out 1.05s both;
+    transform-origin: 12% 100%;
+    filter: drop-shadow(0 10px 14px rgba(20, 22, 26, 0.18));
+  }
+  .hero__van-shadow {
+    position: absolute;
+    left: 6%;
+    right: 4%;
+    bottom: -2px;
+    height: 26px;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(0, 0, 0, 0.45), transparent);
+  }
+  @keyframes brake-photo {
+    35% {
+      transform: rotate(-1deg);
+    }
+    70% {
+      transform: rotate(0.3deg);
+    }
   }
   .hero__van :global(.van-wheel) {
     animation: spin 1.05s cubic-bezier(0.12, 0.7, 0.25, 1) 0.2s both;
@@ -417,9 +482,10 @@ const stripes: [number, number, number][] = [
     .hero__stripes--wide {
       display: none;
     }
+    /* Rises above the stage, beside the headline (fingers stay right of the text). */
     .hero__stripes--stage {
       display: block;
-      inset: 0 calc(var(--gutter) * -1) 0 auto;
+      inset: -130px calc(var(--gutter) * -1) 0 auto;
       width: 92%;
     }
     .hero__stage {
@@ -437,6 +503,14 @@ const stripes: [number, number, number][] = [
       left: 2%;
       right: 2%;
       bottom: 14px;
+    }
+    .hero__stage--photo {
+      aspect-ratio: 1462 / 1010;
+    }
+    .hero__stage--photo .hero__van {
+      left: 7%;
+      right: 3%;
+      bottom: 4px;
     }
     .hero__city {
       bottom: 46px;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildQuoteMessage, mailtoLink, whatsappLink } from './contact';
+import { buildQuoteMessage, gmailLink, mailtoLink, whatsappLink } from './contact';
 
 describe('buildQuoteMessage', () => {
   it('builds a Slovak message and skips empty fields', () => {
@@ -24,5 +24,16 @@ describe('links', () => {
     expect(mailtoLink('Cenová ponuka', 'a\nb')).toBe(
       'mailto:rene.rilak@gmail.com?subject=Cenov%C3%A1%20ponuka&body=a%0Ab',
     );
+  });
+});
+
+describe('gmailLink', () => {
+  it('opens Gmail compose with recipient, subject and body', () => {
+    const url = new URL(gmailLink('Cenová ponuka', 'a\nb'));
+    expect(url.origin + url.pathname).toBe('https://mail.google.com/mail/');
+    expect(url.searchParams.get('view')).toBe('cm');
+    expect(url.searchParams.get('to')).toBe('rene.rilak@gmail.com');
+    expect(url.searchParams.get('su')).toBe('Cenová ponuka');
+    expect(url.searchParams.get('body')).toBe('a\nb');
   });
 });
