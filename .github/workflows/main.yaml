@@ -1,0 +1,62 @@
+name: Build and Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      frontend_version:
+        description: "Frontend version (package.json + k8s image tag)"
+        required: true
+
+env:
+  REGISTRY: harbor.waldoserver.top
+  FE_IMAGE: harbor.waldoserver.top/cloud/rene-website
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: [self-hosted, k8s]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Update package.json version
+        run: |
+          npm version ${{ inputs.frontend_version }} --no-git-tag-version --allow-same-version
+
+      - name: Sync lockfile
+        run: |
+          npm install --package-lock-only --ignore-scripts
+
+      - name: Update k8s manifests
+        run: |
+          FE=${{ inputs.frontend_version }}
+
+          yq -i ".metadata.labels.version = \"$FE\"" k8s/deployment.yaml
+          yq -i ".spec.template.metadata.labels.version = \"$FE\"" k8s/deployment.yaml
+          yq -i ".spec.template.spec.containers[0].image = \"${{ env.FE_IMAGE }}:$FE\"" k8s/deployment.yaml
+
+      - name: Log in to Harbor
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.HARBOR_USERNAME }}
+          password: ${{ secrets.HARBOR_PASSWORD }}
+
+      - name: Build and push frontend
+        run: |
+          docker build --platform linux/amd64 -t ${{ env.FE_IMAGE }}:${{ inputs.frontend_version }} -f Dockerfile .
+          docker push ${{ env.FE_IMAGE }}:${{ inputs.frontend_version }}
+
+      - name: Commit and push for ArgoCD
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json k8s/deployment.yaml
+          git commit -m "GH Actions - Release FE ${{ inputs.frontend_version }}"
+          git push
