@@ -1,0 +1,318 @@
+---
+import { Icon } from 'astro-icon/components';
+import { business } from '../data/business';
+import { whatsappLink } from '../lib/contact';
+import { useTranslations, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const f = t.contact.form;
+const phoneCard = {
+  href: business.phoneHref,
+  icon: 'mdi:phone',
+  label: t.contact.phoneLabel,
+  value: business.phone,
+  hint: t.contact.phoneHours,
+  external: false,
+};
+const waCard = {
+  href: whatsappLink(),
+  icon: 'mdi:whatsapp',
+  label: t.contact.whatsappLabel,
+  value: business.phone,
+  hint: t.contact.whatsappHint,
+  external: true,
+};
+const mailCard = {
+  href: `mailto:${business.email}`,
+  icon: 'mdi:email-outline',
+  label: t.contact.emailLabel,
+  value: business.email,
+  hint: '',
+  external: false,
+};
+// Foreign visitors: written contact first (René speaks Slovak only).
+const cards = lang === 'en' ? [waCard, mailCard, phoneCard] : [phoneCard, waCard, mailCard];
+---
+
+<section id="kontakt" class="section section--alt" aria-labelledby="contact-title">
+  <div class="container">
+    <h2 id="contact-title" class="section-title reveal">{t.contact.title}</h2>
+    <p class="section-lead reveal">{t.contact.lead}</p>
+    {t.contact.languageNote && <p class="lang-note reveal"><Icon name="mdi:translate" aria-hidden="true" /><span>{t.contact.languageNote}</span></p>}
+
+    <div class="contact">
+      <div class="contact__info reveal">
+        <ul class="channels">
+          {
+            cards.map((c) => (
+              <li>
+                <a class="channel" href={c.href} {...(c.external ? { target: '_blank', rel: 'noopener' } : {})}>
+                  <span class:list={['icon-circle', { 'icon-circle--wa': c.icon === 'mdi:whatsapp' }]}>
+                    <Icon name={c.icon} aria-hidden="true" />
+                  </span>
+                  <span class="channel__text">
+                    <span class="channel__label">{c.label}</span>
+                    <span class="channel__value">{c.value}</span>
+                    {c.hint && <span class="channel__hint">{c.hint}</span>}
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="hours">
+          <h3><Icon name="mdi:clock-outline" aria-hidden="true" />{t.contact.hoursTitle}</h3>
+          <ul>{t.contact.hours.map((h) => <li>{h}</li>)}</ul>
+        </div>
+      </div>
+
+      <form class="quote reveal" data-quote data-lang={lang} data-subject={f.emailSubject} novalidate>
+        <h3>{f.title}</h3>
+        <p class="quote__hint">{f.hint}</p>
+        <div class="quote__grid">
+          <label>
+            <span>{f.from}</span>
+            <input name="from" type="text" autocomplete="address-level2" placeholder={f.fromPh} />
+          </label>
+          <label>
+            <span>{f.to}</span>
+            <input name="to" type="text" placeholder={f.toPh} />
+          </label>
+          <label>
+            <span>{f.date}</span>
+            <input name="date" type="date" />
+          </label>
+          <label>
+            <span>{f.phone}</span>
+            <input name="phone" type="tel" autocomplete="tel" inputmode="tel" />
+          </label>
+          <label class="quote__wide">
+            <span>{f.cargo}</span>
+            <textarea name="cargo" rows="3" placeholder={f.cargoPh}></textarea>
+          </label>
+          <label class="quote__wide">
+            <span>{f.name}</span>
+            <input name="name" type="text" autocomplete="name" />
+          </label>
+        </div>
+        <div class="quote__actions">
+          <button class="btn btn--whatsapp" type="submit" value="whatsapp">
+            <Icon name="mdi:whatsapp" aria-hidden="true" /><span>{f.sendWhatsapp}</span>
+          </button>
+          <button class="btn btn--outline" type="submit" value="email">
+            <Icon name="mdi:email-outline" aria-hidden="true" /><span>{f.sendEmail}</span>
+          </button>
+        </div>
+        <noscript><p class="quote__noscript">{f.noscript}</p></noscript>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { buildQuoteMessage, mailtoLink, whatsappLink, type Lang } from '../lib/contact';
+
+  document.querySelectorAll<HTMLFormElement>('[data-quote]').forEach((form) => {
+    const dateInput = form.querySelector<HTMLInputElement>('input[name="date"]');
+    if (dateInput) {
+      const now = new Date();
+      dateInput.min = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+    }
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const submitter = (e as SubmitEvent).submitter as HTMLButtonElement | null;
+      const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
+      const lang = (form.dataset.lang as Lang) ?? 'sk';
+      if (data.date) {
+        const [y, m, d] = data.date.split('-');
+        data.date = `${Number(d)}. ${Number(m)}. ${y}`;
+      }
+      const message = buildQuoteMessage(data, lang);
+      if (submitter?.value === 'email') {
+        window.location.href = mailtoLink(form.dataset.subject ?? '', message);
+      } else {
+        window.open(whatsappLink(message), '_blank', 'noopener');
+      }
+    });
+  });
+</script>
+
+<style>
+  .lang-note {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    max-width: 70ch;
+    margin-top: 18px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    background: var(--white);
+    border: 1px solid var(--line);
+  }
+  .lang-note svg {
+    width: 24px;
+    height: 24px;
+    flex: none;
+    color: var(--red);
+  }
+  .contact {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(24px, 4vw, 48px);
+    margin-top: 40px;
+    align-items: start;
+  }
+  .channels {
+    display: grid;
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .channel {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+    border-radius: var(--radius);
+    background: var(--white);
+    box-shadow: var(--shadow);
+    color: var(--ink);
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .channel:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-strong);
+  }
+  .icon-circle--wa {
+    background: var(--whatsapp);
+  }
+  .channel__text {
+    display: grid;
+    min-width: 0;
+  }
+  .channel__label {
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .channel__value {
+    font-weight: 700;
+    font-size: 1.12rem;
+    overflow-wrap: anywhere;
+  }
+  .channel__hint {
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+  }
+  .hours {
+    margin-top: 22px;
+    padding: 20px 22px;
+    border-radius: var(--radius);
+    background: var(--white);
+    border: 1px solid var(--line);
+  }
+  .hours h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+  .hours h3 svg {
+    width: 22px;
+    height: 22px;
+    color: var(--red);
+  }
+  .hours ul {
+    margin: 10px 0 0;
+    padding-left: 20px;
+    color: var(--ink-soft);
+  }
+  .hours li + li {
+    margin-top: 4px;
+  }
+
+  .quote {
+    padding: clamp(22px, 3vw, 32px);
+    border-radius: var(--radius);
+    background: var(--white);
+    box-shadow: var(--shadow);
+    border-top: 6px solid var(--red);
+  }
+  .quote h3 {
+    font-size: 1.3rem;
+    font-weight: 800;
+  }
+  .quote__hint {
+    margin-top: 6px;
+    color: var(--ink-soft);
+    font-size: 0.93rem;
+  }
+  .quote__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 16px;
+    margin-top: 20px;
+  }
+  .quote__wide {
+    grid-column: 1 / -1;
+  }
+  label {
+    display: grid;
+    gap: 6px;
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+  input,
+  textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    border: 1.5px solid #cfd3d8;
+    border-radius: 10px;
+    background: #fbfbfc;
+    color: var(--ink);
+    font: inherit;
+    font-weight: 400;
+    font-size: 1rem;
+  }
+  textarea {
+    resize: vertical;
+  }
+  input:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px rgba(227, 43, 43, 0.18);
+    background: var(--white);
+  }
+  .quote__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 22px;
+  }
+  .quote__noscript {
+    margin-top: 12px;
+    color: var(--red-dark);
+    font-weight: 600;
+  }
+  @media (max-width: 900px) {
+    .contact {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 520px) {
+    .quote__grid {
+      grid-template-columns: 1fr;
+    }
+    .quote__actions .btn {
+      width: 100%;
+    }
+  }
+</style>

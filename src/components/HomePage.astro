@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Hero from './Hero.astro';
+import Services from './Services.astro';
+import Why from './Why.astro';
+import Steps from './Steps.astro';
+import Vehicle from './Vehicle.astro';
+import Price from './Price.astro';
+import Area from './Area.astro';
+import Contact from './Contact.astro';
+import Footer from './Footer.astro';
+import StickyBar from './StickyBar.astro';
+import { businessSchema } from '../lib/schema';
+import { routes, useTranslations, type Lang } from '../i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const url = new URL(routes.home[lang], Astro.site).href;
+---
+
+<Base lang={lang} page="home" title={t.meta.title} description={t.meta.description} ogAlt={t.meta.ogAlt} schema={businessSchema(lang, t.meta.description, url)}>
+  <a class="skip-link" href="#obsah">{t.a11y.skip}</a>
+  <Header lang={lang} page="home" />
+  <main id="obsah">
+    <Hero lang={lang} />
+    <Services lang={lang} />
+    <Why lang={lang} />
+    <Steps lang={lang} />
+    <Vehicle lang={lang} />
+    <Price lang={lang} />
+    <Area lang={lang} />
+    <Contact lang={lang} />
+  </main>
+  <Footer lang={lang} />
+  <StickyBar lang={lang} />
+</Base>

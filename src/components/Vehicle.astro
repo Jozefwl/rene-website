@@ -1,0 +1,96 @@
+---
+import { Icon } from 'astro-icon/components';
+import Van from './Van.astro';
+import { useTranslations, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const t = useTranslations(Astro.props.lang);
+---
+
+<section id="vozidlo" class="section" aria-labelledby="vehicle-title">
+  <div class="container">
+    <h2 id="vehicle-title" class="section-title reveal">{t.vehicle.title}</h2>
+    <p class="section-lead reveal">{t.vehicle.lead}</p>
+    <div class="vehicle">
+      <div class="vehicle__drawing reveal">
+        <Van id="spec-van" label={t.a11y.vanAlt} dims={{ length: t.vehicle.dimLength, height: t.vehicle.dimHeight }} />
+      </div>
+      <div class="vehicle__info reveal">
+        <dl class="specs">
+          {
+            t.vehicle.specs.map((s) => (
+              <div class="spec">
+                <Icon name={s.icon} aria-hidden="true" />
+                <dt>{s.label}</dt>
+                <dd>{s.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+        <p class="vehicle__fits">{t.vehicle.fits}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .vehicle {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: clamp(28px, 4vw, 56px);
+    align-items: center;
+    margin-top: 40px;
+  }
+  .vehicle__drawing {
+    padding: 8px 0;
+  }
+  .specs {
+    display: grid;
+    gap: 2px;
+    margin: 0;
+  }
+  .spec {
+    display: grid;
+    grid-template-columns: 28px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .spec svg {
+    width: 24px;
+    height: 24px;
+    color: var(--red);
+  }
+  dt {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+  }
+  dd {
+    margin: 0;
+    font-weight: 700;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .vehicle__fits {
+    margin-top: 18px;
+    padding: 16px 18px;
+    border-left: 4px solid var(--red);
+    border-radius: 0 10px 10px 0;
+    background: var(--red-soft);
+    color: var(--ink);
+  }
+  @media (max-width: 900px) {
+    .vehicle {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 420px) {
+    .spec {
+      grid-template-columns: 24px 1fr;
+    }
+    dd {
+      grid-column: 2;
+      text-align: left;
+    }
+  }
+</style>

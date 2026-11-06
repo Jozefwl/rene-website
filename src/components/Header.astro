@@ -1,0 +1,234 @@
+---
+import { Icon } from 'astro-icon/components';
+import Logo from './Logo.astro';
+import { business } from '../data/business';
+import { routes, useTranslations, otherLang, type Lang, type PageId } from '../i18n';
+
+interface Props {
+  lang: Lang;
+  page: PageId;
+}
+const { lang, page } = Astro.props;
+const t = useTranslations(lang);
+const home = routes.home[lang];
+const other = otherLang(lang);
+// On the home page the switch keeps the current section (hash added by script).
+const switchHref = routes[page][other];
+const anchor = (id: string) => (page === 'home' ? `#${id}` : `${home}#${id}`);
+const links = [
+  { id: 'sluzby', label: t.nav.services },
+  { id: 'ako-to-funguje', label: t.nav.how },
+  { id: 'vozidlo', label: t.nav.vehicle },
+  { id: 'kde-jazdime', label: t.nav.area },
+  { id: 'kontakt', label: t.nav.contact },
+];
+---
+
+<header class="header" data-header>
+  <div class="container header__inner">
+    <Logo href={home} />
+
+    <nav class="nav" id="main-nav" aria-label={t.a11y.mainNav} data-nav>
+      <ul class="nav__list">
+        {links.map((l) => <li><a href={anchor(l.id)} class="nav__link" data-nav-link>{l.label}</a></li>)}
+      </ul>
+      <div class="nav__extra">
+        <a class="lang" href={switchHref} hreflang={other} lang={other} aria-label={t.a11y.langSwitch} data-lang-switch>
+          <span class:list={['lang__opt', { 'is-active': lang === 'sk' }]}>SK</span>
+          <span class="lang__sep" aria-hidden="true">|</span>
+          <span class:list={['lang__opt', { 'is-active': lang === 'en' }]}>EN</span>
+        </a>
+        <a class="btn btn--red header__call" href={business.phoneHref}>
+          <Icon name="mdi:phone" aria-hidden="true" />
+          <span>{t.nav.call}</span>
+        </a>
+      </div>
+    </nav>
+
+    <button
+      class="burger"
+      type="button"
+      aria-controls="main-nav"
+      aria-expanded="false"
+      data-burger
+      data-label-open={t.a11y.menuOpen}
+      data-label-close={t.a11y.menuClose}>
+      <Icon name="mdi:menu" class="burger__open" aria-hidden="true" />
+      <Icon name="mdi:close" class="burger__close" aria-hidden="true" />
+      <span class="visually-hidden" data-burger-label>{t.a11y.menuOpen}</span>
+    </button>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const burger = document.querySelector<HTMLButtonElement>('[data-burger]');
+  const label = document.querySelector<HTMLElement>('[data-burger-label]');
+
+  const setOpen = (open: boolean) => {
+    if (!header || !burger || !label) return;
+    header.classList.toggle('is-open', open);
+    burger.setAttribute('aria-expanded', String(open));
+    label.textContent = (open ? burger.dataset.labelClose : burger.dataset.labelOpen) ?? '';
+  };
+
+  burger?.addEventListener('click', () => setOpen(burger.getAttribute('aria-expanded') !== 'true'));
+  document.querySelectorAll('[data-nav-link]').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('keydown', (e) => e.key === 'Escape' && setOpen(false));
+
+  const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Keep the current section when switching language.
+  document.querySelector<HTMLAnchorElement>('[data-lang-switch]')?.addEventListener('click', (e) => {
+    const a = e.currentTarget as HTMLAnchorElement;
+    if (location.hash) a.href = a.href.split('#')[0] + location.hash;
+  });
+</script>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: saturate(1.4) blur(8px);
+    transition: box-shadow 0.2s;
+  }
+  .header.is-scrolled {
+    box-shadow: 0 2px 18px rgba(20, 22, 26, 0.08);
+  }
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    min-height: var(--header-h);
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  .nav__list {
+    display: flex;
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .nav__link {
+    position: relative;
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+  }
+  .nav__link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--red);
+    transform: scaleX(0);
+    transition: transform 0.2s;
+  }
+  .nav__link:hover::after {
+    transform: scaleX(1);
+  }
+  .nav__extra {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .lang {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    padding: 0 4px;
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 0.92rem;
+    text-decoration: none;
+  }
+  .lang__opt.is-active {
+    color: var(--ink);
+    font-weight: 800;
+  }
+  .lang:hover .lang__opt:not(.is-active) {
+    color: var(--red);
+  }
+  .header__call {
+    min-height: 44px;
+    padding: 8px 20px;
+  }
+  .burger {
+    display: none;
+    width: 48px;
+    height: 48px;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 12px;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .burger svg {
+    width: 30px;
+    height: 30px;
+  }
+  .burger__close {
+    display: none;
+  }
+
+  @media (max-width: 980px) {
+    .burger {
+      display: grid;
+    }
+    .nav {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+      padding: 8px var(--gutter) 24px;
+      background: var(--white);
+      box-shadow: 0 16px 30px rgba(20, 22, 26, 0.12);
+      display: none;
+    }
+    .header.is-open .nav {
+      display: flex;
+    }
+    .header.is-open .burger__open {
+      display: none;
+    }
+    .header.is-open .burger__close {
+      display: block;
+    }
+    .nav__list {
+      flex-direction: column;
+      gap: 0;
+    }
+    .nav__link {
+      display: block;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 1.05rem;
+    }
+    .nav__link::after {
+      display: none;
+    }
+    .nav__extra {
+      justify-content: space-between;
+      padding-top: 12px;
+    }
+  }
+</style>

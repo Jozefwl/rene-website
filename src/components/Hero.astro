@@ -1,0 +1,475 @@
+---
+import { Icon } from 'astro-icon/components';
+import Van from './Van.astro';
+import { business } from '../data/business';
+import { whatsappLink } from '../lib/contact';
+import { useTranslations, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const pointIcons = ['mdi:speedometer', 'mdi:shield-check', 'mdi:map-marker'];
+const wa = whatsappLink();
+// Stripes like on the business card: [top %, width %, height px]
+const stripes: [number, number, number][] = [
+  [6, 34, 30],
+  [17, 52, 40],
+  [31, 40, 34],
+  [44, 70, 46],
+  [59, 46, 34],
+  [71, 84, 52],
+];
+---
+
+<section class="hero" aria-labelledby="hero-title" data-hero>
+  <div class="hero__stripes hero__stripes--wide" aria-hidden="true">
+    {stripes.map(([top, w, h], i) => <span class="stripe" style={`--top:${top}%;--w:${w}%;--h:${h}px;--i:${i}`} />)}
+  </div>
+
+  <div class="container hero__inner">
+    <div class="hero__text">
+      <h1 id="hero-title" class="hero__title">
+        <span class="hero__kicker">{t.hero.kicker}</span>
+        <span class="hero__t1">{t.hero.title1}</span>
+        <span class="hero__t2">{t.hero.title2}</span>
+      </h1>
+
+      <ul class="hero__points">
+        {
+          t.hero.points.map((p, i) => (
+            <li style={`--i:${i}`}>
+              <span class="icon-circle">
+                <Icon name={pointIcons[i]} aria-hidden="true" />
+              </span>
+              <span>{p}</span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class:list={['hero__cta', { 'hero__cta--en': lang === 'en' }]}>
+        <a class="btn btn--red hero__phone" href={business.phoneHref}>
+          <Icon name="mdi:phone" aria-hidden="true" />
+          <span>{business.phone}</span>
+        </a>
+        <a class="btn btn--whatsapp" href={wa} target="_blank" rel="noopener">
+          <Icon name="mdi:whatsapp" aria-hidden="true" />
+          <span>{t.hero.whatsapp}</span>
+        </a>
+      </div>
+
+      <p class="hero__sub">{t.hero.sub}</p>
+    </div>
+
+    <div class="hero__stage">
+      <div class="hero__stripes hero__stripes--stage" aria-hidden="true">
+        {stripes.slice(1).map(([top, w, h], i) => <span class="stripe" style={`--top:${top - 12}%;--w:${w}%;--h:${Math.round(h * 0.6)}px;--i:${i}`} />)}
+      </div>
+      <svg class="hero__city" viewBox="0 0 600 220" aria-hidden="true" preserveAspectRatio="xMidYMax slice">
+        <g fill="#c9ccd1">
+          <rect x="20" y="110" width="50" height="110"></rect>
+          <rect x="78" y="70" width="38" height="150"></rect>
+          <rect x="124" y="130" width="60" height="90"></rect>
+          <rect x="196" y="40" width="44" height="180"></rect>
+          <rect x="248" y="96" width="56" height="124"></rect>
+          <rect x="312" y="20" width="36" height="200"></rect>
+          <rect x="356" y="120" width="70" height="100"></rect>
+          <rect x="436" y="60" width="46" height="160"></rect>
+          <rect x="490" y="104" width="64" height="116"></rect>
+        </g>
+      </svg>
+      <div class="hero__road" aria-hidden="true"></div>
+      <div class="hero__van">
+        <div class="hero__trail" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <Van id="hero-van" label={t.a11y.vanAlt} class="hero__van-svg" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // A tap, click or key press during the intro jumps straight to the final state.
+  const root = document.documentElement;
+  if (!root.classList.contains('no-intro')) {
+    const skip = () => root.classList.add('no-intro');
+    const opts = { once: true, passive: true } as const;
+    window.addEventListener('pointerdown', skip, opts);
+    window.addEventListener('keydown', skip, { once: true });
+    window.setTimeout(() => {
+      window.removeEventListener('pointerdown', skip);
+      window.removeEventListener('keydown', skip);
+    }, 2500);
+  }
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: linear-gradient(180deg, #ffffff 0%, var(--bg-alt) 100%);
+    padding-block: clamp(36px, 6vw, 72px) 0;
+  }
+
+  /* ---------- Red speed stripes (from the business card) ---------- */
+  .hero__stripes {
+    position: absolute;
+    z-index: 1;
+    inset: 0 0 0 auto;
+    width: min(62%, 900px);
+    pointer-events: none;
+  }
+  .hero__stripes--stage {
+    display: none;
+  }
+  .stripe {
+    position: absolute;
+    right: 0;
+    top: var(--top);
+    width: var(--w);
+    height: var(--h);
+    border-radius: var(--radius-pill) 0 0 var(--radius-pill);
+    background: var(--red);
+    animation: stripe-in 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: calc(var(--i) * 70ms);
+  }
+  .stripe:nth-child(n + 5) {
+    background: linear-gradient(90deg, var(--red) 0%, #d82626 100%);
+  }
+  @keyframes stripe-in {
+    from {
+      transform: translateX(105%);
+    }
+  }
+
+  /* ---------- Layout ---------- */
+  .hero__inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    align-items: end;
+    gap: 24px;
+  }
+  .hero__text {
+    position: relative;
+    z-index: 2;
+    padding-bottom: clamp(40px, 6vw, 80px);
+  }
+
+  /* ---------- Headline ---------- */
+  .hero__title {
+    display: flex;
+    flex-direction: column;
+    text-transform: uppercase;
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: 0.005em;
+  }
+  .hero__kicker {
+    font-size: clamp(1.4rem, 2.6vw, 2rem);
+    color: var(--ink);
+    margin-bottom: 8px;
+    animation: fade-up 0.5s ease-out 0.85s both;
+  }
+  .hero__t1 {
+    font-size: clamp(3.2rem, 8vw, 6rem);
+    color: var(--red);
+    transform-origin: left center;
+    animation: slam 0.45s cubic-bezier(0.2, 1.4, 0.4, 1) 1s both;
+  }
+  .hero__t2 {
+    font-size: clamp(3.2rem, 8vw, 6rem);
+    color: var(--ink);
+    animation: fade-up 0.5s ease-out 1.15s both;
+  }
+
+  /* ---------- Points ---------- */
+  .hero__points {
+    display: grid;
+    gap: 14px;
+    margin: clamp(24px, 3vw, 36px) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .hero__points li {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-weight: 800;
+    font-size: clamp(1.05rem, 1.8vw, 1.3rem);
+    text-transform: uppercase;
+    animation: fade-left 0.45s ease-out both;
+    animation-delay: calc(1.3s + var(--i) * 0.12s);
+  }
+
+  /* ---------- Buttons ---------- */
+  .hero__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: clamp(26px, 3vw, 36px);
+    animation: fade-up 0.5s ease-out 1.7s both;
+  }
+  /* English: WhatsApp first (René speaks Slovak only). */
+  .hero__cta--en > :last-child {
+    order: -1;
+  }
+  .hero__phone {
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    font-weight: 800;
+    padding-inline: 28px;
+    letter-spacing: 0.02em;
+  }
+  .hero__sub {
+    margin-top: 18px;
+    max-width: 46ch;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    animation: fade-up 0.5s ease-out 1.85s both;
+  }
+
+  /* ---------- Stage: city, road, van ---------- */
+  .hero__stage {
+    position: relative;
+    align-self: stretch;
+    min-height: clamp(280px, 34vw, 460px);
+  }
+  .hero__city {
+    position: absolute;
+    left: -6%;
+    right: 0;
+    bottom: 64px;
+    width: 92%;
+    height: 62%;
+    opacity: 0.3;
+    z-index: 0;
+  }
+  .hero__road {
+    position: absolute;
+    z-index: 2;
+    left: -100vw;
+    right: -100vw;
+    bottom: 0;
+    height: 64px;
+    background:
+      repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.85) 0 46px, transparent 46px 92px) center 30px / 100% 4px no-repeat,
+      var(--road);
+  }
+  .hero__van {
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    right: -8%;
+    bottom: 22px;
+    animation: drive-in 1.05s cubic-bezier(0.12, 0.7, 0.25, 1) 0.2s both;
+  }
+  .hero__van-svg {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 18px 18px rgba(20, 22, 26, 0.12));
+  }
+  .hero__van :global(.van-wheel) {
+    animation: spin 1.05s cubic-bezier(0.12, 0.7, 0.25, 1) 0.2s both;
+  }
+  .hero__van :global(.van-body) {
+    transform-box: view-box;
+    transform-origin: 97px 258px;
+    animation: brake 0.55s ease-out 1.05s both;
+  }
+
+  /* Speed lines behind the van while it drives in */
+  .hero__trail {
+    position: absolute;
+    left: 98%;
+    top: 22%;
+    width: 60%;
+    height: 58%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    opacity: 0;
+    transform-origin: left center;
+    animation: trail 1.05s ease-out 0.2s both;
+  }
+  .hero__trail span {
+    height: 5px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, rgba(42, 42, 42, 0.35), transparent);
+  }
+  .hero__trail span:nth-child(2) {
+    margin-left: 14%;
+  }
+
+  @keyframes drive-in {
+    from {
+      transform: translateX(110vw);
+    }
+  }
+  @keyframes spin {
+    from {
+      transform: rotate(1440deg);
+    }
+    to {
+      transform: rotate(0deg);
+    }
+  }
+  @keyframes brake {
+    0% {
+      transform: none;
+    }
+    35% {
+      transform: rotate(-1.4deg);
+    }
+    70% {
+      transform: rotate(0.4deg);
+    }
+    100% {
+      transform: none;
+    }
+  }
+  @keyframes trail {
+    0% {
+      opacity: 1;
+    }
+    70% {
+      opacity: 1;
+      transform: none;
+    }
+    100% {
+      opacity: 0;
+      transform: scaleX(0.2);
+    }
+  }
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+  }
+  @keyframes fade-left {
+    from {
+      opacity: 0;
+      transform: translateX(-18px);
+    }
+  }
+  @keyframes slam {
+    from {
+      opacity: 0;
+      transform: scale(1.35) translateX(-10px);
+    }
+  }
+
+  /* Intro already seen this session, skipped, or reduced motion: show the final state. */
+  :global(html.no-intro) .hero *,
+  :global(html.no-intro) .hero :global(*) {
+    animation: none !important;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero *,
+    .hero :global(*) {
+      animation: none !important;
+    }
+  }
+
+  /* ---------- Tablet / mobile: title, van, points, buttons ---------- */
+  @media (max-width: 900px) {
+    .hero {
+      padding-top: 28px;
+    }
+    .hero__inner {
+      grid-template-columns: 1fr;
+      grid-template-areas: 'title' 'stage' 'points' 'cta' 'sub';
+      gap: 0;
+    }
+    .hero__text {
+      display: contents;
+    }
+    .hero__title {
+      grid-area: title;
+      position: relative;
+      z-index: 2;
+    }
+    .hero__stage {
+      grid-area: stage;
+    }
+    .hero__points {
+      grid-area: points;
+    }
+    .hero__cta {
+      grid-area: cta;
+    }
+    .hero__sub {
+      grid-area: sub;
+      padding-bottom: 36px;
+    }
+    .hero__kicker {
+      font-size: clamp(1.1rem, 4.6vw, 1.5rem);
+      margin-bottom: 4px;
+    }
+    .hero__t1,
+    .hero__t2 {
+      font-size: clamp(2.6rem, 13vw, 4.4rem);
+    }
+    .hero__stripes--wide {
+      display: none;
+    }
+    .hero__stripes--stage {
+      display: block;
+      inset: 0 calc(var(--gutter) * -1) 0 auto;
+      width: 92%;
+    }
+    .hero__stage {
+      min-height: 0;
+      aspect-ratio: 660 / 330;
+      margin-top: 4px;
+    }
+    .hero__road {
+      height: 46px;
+      background:
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.85) 0 34px, transparent 34px 68px) center 21px / 100% 3px no-repeat,
+        var(--road);
+    }
+    .hero__van {
+      left: 2%;
+      right: 2%;
+      bottom: 14px;
+    }
+    .hero__city {
+      bottom: 46px;
+      left: 0;
+      width: 100%;
+    }
+    .hero__points {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 26px;
+    }
+    .hero__points li {
+      flex-direction: column;
+      gap: 8px;
+      text-align: center;
+      font-size: clamp(0.72rem, 3.2vw, 0.95rem);
+      line-height: 1.25;
+    }
+    .hero__points li .icon-circle {
+      width: 46px;
+      height: 46px;
+    }
+    .hero__points li .icon-circle :global(svg) {
+      width: 26px;
+      height: 26px;
+    }
+    .hero__cta {
+      margin-top: 26px;
+    }
+  }
+  @media (max-width: 520px) {
+    .hero__cta .btn {
+      width: 100%;
+    }
+  }
+</style>

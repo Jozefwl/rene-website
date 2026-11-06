@@ -1,0 +1,63 @@
+---
+import { Icon } from 'astro-icon/components';
+import AreaMap from './AreaMap.astro';
+import { useTranslations, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="kde-jazdime" class="section" aria-labelledby="area-title">
+  <div class="container area">
+    <div class="reveal">
+      <h2 id="area-title" class="section-title">{t.area.title}</h2>
+      <p class="section-lead">{t.area.text}</p>
+      <ul class="area__notes">
+        <li><Icon name="mdi:map-marker-radius" aria-hidden="true" /><span>{t.area.whole}</span></li>
+        <li><Icon name="mdi:map-marker-distance" aria-hidden="true" /><span>{t.area.domestic}</span></li>
+      </ul>
+    </div>
+    <div class="area__map reveal">
+      <AreaMap lang={lang} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .area {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: clamp(28px, 5vw, 64px);
+    align-items: center;
+  }
+  .area__notes {
+    display: grid;
+    gap: 12px;
+    margin: 26px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .area__notes li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 600;
+  }
+  .area__notes svg {
+    width: 26px;
+    height: 26px;
+    flex: none;
+    color: var(--red);
+  }
+  .area__map {
+    padding: 12px;
+    border-radius: 20px;
+    background: var(--white);
+    box-shadow: var(--shadow);
+  }
+  @media (max-width: 900px) {
+    .area {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,88 @@
+---
+// Schematic map (not to exact scale) of the service area, projected from real coordinates.
+import { useTranslations, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const t = useTranslations(Astro.props.lang);
+
+type Side = 'r' | 'l' | 'bl';
+const towns: { name: string; lat: number; lon: number; side: Side }[] = [
+  { name: 'Snina', lat: 48.988, lon: 22.152, side: 'r' },
+  { name: 'Vranov nad Topľou', lat: 48.889, lon: 21.684, side: 'l' },
+  { name: 'Strážske', lat: 48.873, lon: 21.835, side: 'bl' },
+  { name: 'Michalovce', lat: 48.755, lon: 21.918, side: 'r' },
+  { name: 'Stropkov', lat: 49.202, lon: 21.651, side: 'r' },
+  { name: 'Svidník', lat: 49.306, lon: 21.57, side: 'r' },
+  { name: 'Prešov', lat: 48.998, lon: 21.239, side: 'r' },
+  { name: 'Košice', lat: 48.716, lon: 21.261, side: 'r' },
+];
+const S = 620;
+const project = (lat: number, lon: number) => ({
+  x: Math.round((lon - 21.05) * 0.656 * S + 20),
+  y: Math.round((49.42 - lat) * S),
+});
+const base = project(48.937, 21.906);
+const points = towns.map((tw) => ({ ...tw, ...project(tw.lat, tw.lon) }));
+const label = (p: { x: number; y: number; side: Side }) =>
+  p.side === 'r'
+    ? { x: p.x + 14, y: p.y + 5, anchor: 'start' }
+    : p.side === 'l'
+      ? { x: p.x - 14, y: p.y + 5, anchor: 'end' }
+      : { x: p.x + 4, y: p.y + 28, anchor: 'end' };
+---
+
+<svg class="map" viewBox="0 30 540 450" role="img" aria-label={t.area.mapLabel}>
+  <defs>
+    <pattern id="map-dots" width="18" height="18" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.4" fill="#d5d8dd"></circle>
+    </pattern>
+  </defs>
+  <rect x="0" y="30" width="540" height="450" rx="18" fill="url(#map-dots)"></rect>
+
+  <circle cx={base.x} cy={base.y} r="105" fill="rgba(227,43,43,0.07)" stroke="rgba(227,43,43,0.35)" stroke-width="2" stroke-dasharray="6 6"></circle>
+
+  <g stroke="#e32b2b" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round" opacity="0.7">
+    {points.map((p) => <line x1={base.x} y1={base.y} x2={p.x} y2={p.y} />)}
+  </g>
+
+  <g font-family="Poppins, Arial, sans-serif" font-size="15" font-weight="600" fill="#2a2a2a">
+    {
+      points.map((p) => {
+        const l = label(p);
+        return (
+          <g>
+            <circle cx={p.x} cy={p.y} r="7" fill="#ffffff" stroke="#2a2a2a" stroke-width="3" />
+            <text x={l.x} y={l.y} text-anchor={l.anchor} paint-order="stroke" stroke="#ffffff" stroke-width="4">
+              {p.name}
+            </text>
+          </g>
+        );
+      })
+    }
+  </g>
+
+  <g>
+    <circle cx={base.x} cy={base.y} r="22" fill="#e32b2b" opacity="0.18"></circle>
+    <circle cx={base.x} cy={base.y} r="12" fill="#e32b2b" stroke="#ffffff" stroke-width="3"></circle>
+    <text class="map__base" x={base.x + 18} y={base.y + 36} font-family="Poppins, Arial, sans-serif" font-weight="800" font-size="20" fill="#e32b2b" paint-order="stroke" stroke="#ffffff" stroke-width="5">Humenné</text>
+    <text class="map__base-sub" x={base.x + 18} y={base.y + 54} font-family="Poppins, Arial, sans-serif" font-weight="600" font-size="12" fill="#555b63" letter-spacing="1" paint-order="stroke" stroke="#ffffff" stroke-width="4">{t.area.base.toUpperCase()}</text>
+  </g>
+</svg>
+
+<style>
+  .map {
+    width: 100%;
+    height: auto;
+  }
+  /* Bigger labels when the map is drawn small. */
+  @media (max-width: 600px) {
+    .map :global(text) {
+      font-size: 21px;
+    }
+    .map .map__base {
+      font-size: 26px;
+    }
+    .map .map__base-sub {
+      font-size: 15px;
+    }
+  }
+</style>

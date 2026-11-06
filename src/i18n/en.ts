@@ -1,0 +1,156 @@
+import type { Dict } from './sk';
+
+const en: Dict = {
+  meta: {
+    title: 'R&R Autodoprava – goods delivery and moving, Humenné (Slovakia)',
+    description:
+      'Goods delivery, furniture and building material transport, moving and waste removal with a van up to 3.5 t. Humenné and surroundings, anywhere in Slovakia by agreement.',
+    ogAlt: 'R&R Autodoprava – reliable goods delivery, Humenné and surroundings',
+  },
+  a11y: {
+    skip: 'Skip to content',
+    menuOpen: 'Open menu',
+    menuClose: 'Close menu',
+    mainNav: 'Main menu',
+    langSwitch: 'Prepnúť do slovenčiny',
+    vanAlt: 'White Peugeot Boxer L4H2 van – R&R Autodoprava',
+    skipIntro: 'Skip animation',
+  },
+  nav: {
+    services: 'Services',
+    how: 'How it works',
+    vehicle: 'Vehicle',
+    area: 'Where we drive',
+    contact: 'Contact',
+    call: 'Call',
+  },
+  hero: {
+    kicker: 'Reliable',
+    title1: 'Goods',
+    title2: 'delivery',
+    points: ['Fast', 'Reliable', 'Humenné & surroundings'],
+    sub: 'Van up to 3.5 t · Peugeot Boxer L4H2 · 15 m³ · anywhere in Slovakia by agreement',
+    whatsapp: 'Message on WhatsApp',
+  },
+  services: {
+    title: 'Services',
+    lead: 'We transport what you need – for households and businesses.',
+    items: [
+      { icon: 'mdi:package-variant-closed', title: 'Goods delivery', text: 'For private customers and companies – from a shop, warehouse or e-shop straight to you.' },
+      { icon: 'mdi:sofa', title: 'Furniture and building material', text: 'Transport of furniture, appliances, building material and larger items.' },
+      { icon: 'mdi:home-export-outline', title: 'Moving', text: 'Moving flats, houses, offices and companies.' },
+      { icon: 'mdi:trash-can-outline', title: 'Waste removal', text: 'Removal of old furniture, renovation waste and things you no longer need.' },
+      { icon: 'mdi:truck-fast', title: 'Express transport', text: 'When it’s urgent – fast transport anywhere in Slovakia.' },
+      { icon: 'mdi:dolly', title: 'Loading and unloading', text: 'Help with loading and unloading by agreement.' },
+    ],
+  },
+  why: {
+    title: 'Why R&R Autodoprava',
+    items: [
+      { icon: 'mdi:shield-check', title: 'Reliable', text: 'What we agree on, we deliver. Your things are handled with care.' },
+      { icon: 'mdi:clock-outline', title: 'On time', text: 'We arrive on time, and if anything changes, we let you know in advance.' },
+      { icon: 'mdi:lightning-bolt', title: 'Quick arrangement', text: 'Just call or send a message – we agree on a date right away.' },
+      { icon: 'mdi:calendar-check', title: 'Weekends too', text: 'We drive on Saturdays, Sundays by agreement. In urgent cases 24/7.' },
+    ],
+  },
+  how: {
+    title: 'How it works',
+    steps: [
+      { title: 'Message or call', text: 'Tell us what needs to be transported, from where and to where.' },
+      { title: 'We agree on price and date', text: 'You know the price in advance, based on distance and volume.' },
+      { title: 'We deliver', text: 'We arrive at the agreed time and deliver your things safely.' },
+    ],
+  },
+  vehicle: {
+    title: 'Vehicle',
+    lead: 'A spacious Peugeot Boxer L4H2 van – the longest version with a high roof.',
+    specs: [
+      { icon: 'mdi:cube-outline', label: 'Volume', value: '15 m³' },
+      { icon: 'mdi:weight', label: 'Load', value: 'up to 1.5 t' },
+      { icon: 'mdi:arrow-expand-horizontal', label: 'Cargo space (L × W × H)', value: '4.07 × 1.87 × 1.93 m' },
+      { icon: 'mdi:arrow-expand-horizontal', label: 'Width between wheel arches', value: '1.42 m' },
+      { icon: 'mdi:truck-outline', label: 'Rear door (W × H)', value: '1.56 × 1.79 m' },
+      { icon: 'mdi:truck-outline', label: 'Side sliding door (W × H)', value: '1.25 × 1.75 m' },
+    ],
+    fits: 'Fits, for example, the furniture of a 1–2 room flat, a sofa and a wardrobe, or palletised goods.',
+    dimLength: '4.07 m',
+    dimHeight: '1.93 m',
+  },
+  price: {
+    title: 'Price and payment',
+    text: 'Price by agreement – it depends on the distance, the load and help with loading. Message or call us and you’ll know the price in advance.',
+    payTitle: 'Payment options',
+    pay: [
+      { icon: 'mdi:cash', label: 'Cash' },
+      { icon: 'mdi:bank-transfer', label: 'Bank transfer' },
+      { icon: 'mdi:file-document-outline', label: 'Invoice' },
+    ],
+  },
+  area: {
+    title: 'Where we drive',
+    text: 'The van is based in Humenné. We mainly deliver in Humenné and the surroundings – Snina, Vranov nad Topľou, Strážske, Michalovce, Stropkov, Svidník, Prešov and Košice. By agreement, anywhere in Slovakia.',
+    base: 'Base',
+    whole: 'Anywhere in Slovakia by agreement',
+    domestic: 'Domestic transport within Slovakia only.',
+    mapLabel: 'Schematic map of the service area in eastern Slovakia, based in Humenné',
+  },
+  contact: {
+    title: 'Contact',
+    lead: 'For a quote or to book a date, get in touch.',
+    phoneLabel: 'Phone',
+    phoneHours: 'daily 7:00 – 19:00',
+    whatsappLabel: 'WhatsApp',
+    whatsappHint: 'same number',
+    emailLabel: 'Email',
+    hoursTitle: 'When we drive',
+    hours: [
+      'Monday – Saturday',
+      'Sunday by agreement',
+      'In urgent cases outside regular hours too (24/7 by agreement)',
+    ],
+    languageNote:
+      'Phone calls are in Slovak. If you don’t speak Slovak, please send a WhatsApp message or an email in English and we’ll get back to you.',
+    form: {
+      title: 'Free quote request',
+      hint: 'Fill in what you know. The message is sent via WhatsApp or email – nothing is stored.',
+      from: 'From',
+      fromPh: 'e.g. Humenné',
+      to: 'To',
+      toPh: 'e.g. Košice',
+      date: 'Date',
+      cargo: 'What needs to be transported',
+      cargoPh: 'e.g. sofa, wardrobe, 10 boxes',
+      name: 'Name',
+      phone: 'Phone',
+      sendWhatsapp: 'Send via WhatsApp',
+      sendEmail: 'Send by email',
+      emailSubject: 'Quote request – transport',
+      noscript: 'The form needs JavaScript. Please call us or send a WhatsApp message.',
+    },
+  },
+  footer: {
+    registered: 'Registered in the Trade Register of the District Office Vranov nad Topľou.',
+    ico: 'Company ID (IČO)',
+    dic: 'Tax ID (DIČ)',
+    notVat: 'Not a VAT payer.',
+    privacy: 'Privacy policy',
+    rights: 'All rights reserved.',
+    backToTop: 'Back to top',
+  },
+  sticky: {
+    call: 'Call',
+    whatsapp: 'WhatsApp',
+  },
+  privacy: {
+    title: 'Privacy policy',
+    metaDescription: 'Information about the processing of personal data – R&R Autodoprava, René Rilák.',
+    back: 'Back to the home page',
+  },
+  notFound: {
+    title: 'Page not found',
+    text: 'This page doesn’t exist. Maybe the address is wrong or the page has moved.',
+    back: 'Back to the home page',
+  },
+};
+
+export default en;

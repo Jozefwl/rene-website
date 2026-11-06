@@ -1,0 +1,94 @@
+---
+import { Icon } from 'astro-icon/components';
+import { business } from '../data/business';
+import { whatsappLink } from '../lib/contact';
+import { useTranslations, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section class="section section--alt" aria-labelledby="price-title">
+  <div class="container price">
+    <div class="reveal">
+      <h2 id="price-title" class="section-title">{t.price.title}</h2>
+      <p class="section-lead">{t.price.text}</p>
+      <div class:list={['price__cta', { 'price__cta--en': lang === 'en' }]}>
+        <a class="btn btn--red" href={business.phoneHref}>
+          <Icon name="mdi:phone" aria-hidden="true" /><span>{business.phone}</span>
+        </a>
+        <a class="btn btn--outline" href={whatsappLink()} target="_blank" rel="noopener">
+          <Icon name="mdi:whatsapp" aria-hidden="true" /><span>WhatsApp</span>
+        </a>
+      </div>
+    </div>
+    <div class="pay reveal">
+      <h3>{t.price.payTitle}</h3>
+      <ul>
+        {
+          t.price.pay.map((p) => (
+            <li>
+              <span class="icon-circle"><Icon name={p.icon} aria-hidden="true" /></span>
+              <span>{p.label}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .price {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: clamp(28px, 5vw, 64px);
+    align-items: center;
+  }
+  .price__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+  /* English: WhatsApp first (René speaks Slovak only). */
+  .price__cta--en > :last-child {
+    order: -1;
+  }
+  .pay {
+    padding: 28px;
+    border-radius: var(--radius);
+    background: var(--white);
+    box-shadow: var(--shadow);
+  }
+  .pay h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+  .pay ul {
+    display: grid;
+    gap: 14px;
+    margin: 18px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .pay li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-weight: 600;
+  }
+  .pay .icon-circle {
+    width: 44px;
+    height: 44px;
+  }
+  .pay .icon-circle :global(svg) {
+    width: 24px;
+    height: 24px;
+  }
+  @media (max-width: 820px) {
+    .price {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

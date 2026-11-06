@@ -1,0 +1,112 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import { business } from '../data/business';
+import { routes, useTranslations, type Lang } from '../i18n';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const a = business.address;
+const controller = `${business.legalName} – ${business.brand}, ${a.street}, ${a.postalCode} ${a.city}, IČO ${business.ico}`;
+---
+
+<Base lang={lang} page="privacy" title={`${t.privacy.title} – ${business.brand}`} description={t.privacy.metaDescription}>
+  <a class="skip-link" href="#obsah">{t.a11y.skip}</a>
+  <Header lang={lang} page="privacy" />
+  <main id="obsah" class="section">
+    <article class="container legal">
+      <h1 class="section-title">{t.privacy.title}</h1>
+      {
+        lang === 'sk' ? (
+          <>
+            <p>Táto stránka popisuje, ako spracúvame osobné údaje podľa nariadenia (EÚ) 2016/679 (GDPR) a zákona č. 18/2018 Z. z. o ochrane osobných údajov.</p>
+
+            <h2>Prevádzkovateľ</h2>
+            <p>{controller}.<br />Kontakt: <a href={`mailto:${business.email}`}>{business.email}</a>, <a href={business.phoneHref}>{business.phone}</a>.</p>
+
+            <h2>Aké údaje spracúvame a prečo</h2>
+            <p>Keď nás kontaktujete telefonicky, cez WhatsApp alebo e-mailom, spracúvame údaje, ktoré nám sami poskytnete – meno, telefónne číslo, e-mail, adresy nakládky a vykládky, termín a popis prepravy. Používame ich iba na vybavenie vašej požiadavky, prípravu cenovej ponuky a vykonanie prepravy (čl. 6 ods. 1 písm. b) GDPR – opatrenia pred uzavretím zmluvy a plnenie zmluvy).</p>
+            <p>Ak vystavíme faktúru, údaje na nej uchovávame podľa zákona o účtovníctve (čl. 6 ods. 1 písm. c) GDPR – zákonná povinnosť).</p>
+
+            <h2>Formulár na stránke</h2>
+            <p>Formulár „Nezáväzná cenová ponuka“ neodosiela údaje na náš server a nič neukladá. Iba z vyplnených polí pripraví správu, ktorú potom sami odošlete cez WhatsApp alebo vašu e-mailovú aplikáciu. Na takúto komunikáciu sa vzťahujú aj podmienky služby WhatsApp (Meta) alebo vášho poskytovateľa e-mailu.</p>
+
+            <h2>Cookies a analytika</h2>
+            <p>Táto stránka nepoužíva reklamné ani analytické cookies a nesleduje vás. Server môže krátkodobo zaznamenávať technické údaje (napr. IP adresu a čas požiadavky) na zabezpečenie prevádzky a ochranu pred zneužitím (oprávnený záujem, čl. 6 ods. 1 písm. f) GDPR).</p>
+
+            <h2>Ako dlho údaje uchovávame</h2>
+            <p>Údaje z komunikácie uchovávame len po dobu potrebnú na vybavenie požiadavky a prepravy. Účtovné doklady uchovávame po dobu stanovenú zákonom (spravidla 10 rokov).</p>
+
+            <h2>Komu údaje poskytujeme</h2>
+            <p>Vaše údaje nepredávame ani neposkytujeme tretím stranám na marketing. Môžu ich spracúvať iba poskytovatelia služieb, ktoré pri komunikácii používate (napr. WhatsApp, e-mail), a orgány verejnej moci, ak to vyžaduje zákon.</p>
+
+            <h2>Vaše práva</h2>
+            <p>Máte právo na prístup k údajom, ich opravu, vymazanie, obmedzenie spracúvania, prenosnosť a právo namietať. Stačí nám napísať na <a href={`mailto:${business.email}`}>{business.email}</a>. Ak máte za to, že vaše údaje spracúvame nezákonne, môžete podať návrh na Úrad na ochranu osobných údajov Slovenskej republiky, Hraničná 12, 820 07 Bratislava (<a href="https://dataprotection.gov.sk" rel="noopener" target="_blank">dataprotection.gov.sk</a>).</p>
+          </>
+        ) : (
+          <>
+            <p class="legal__note">This is a translation for convenience. The Slovak version (<a href={routes.privacy.sk} hreflang="sk">Ochrana osobných údajov</a>) is the binding one.</p>
+            <p>This page explains how we process personal data under Regulation (EU) 2016/679 (GDPR) and Slovak Act No. 18/2018 Coll. on personal data protection.</p>
+
+            <h2>Controller</h2>
+            <p>{controller}.<br />Contact: <a href={`mailto:${business.email}`}>{business.email}</a>, <a href={business.phoneHref}>{business.phone}</a>.</p>
+
+            <h2>What data we process and why</h2>
+            <p>When you contact us by phone, WhatsApp or email, we process the data you give us – name, phone number, email, pick-up and delivery addresses, date and a description of the transport. We use it only to handle your request, prepare a quote and carry out the transport (Art. 6(1)(b) GDPR – pre-contractual steps and performance of a contract).</p>
+            <p>If we issue an invoice, the data on it is kept as required by Slovak accounting law (Art. 6(1)(c) GDPR – legal obligation).</p>
+
+            <h2>The form on this website</h2>
+            <p>The “Free quote request” form does not send data to our server and stores nothing. It only prepares a message from the fields you fill in, which you then send yourself via WhatsApp or your email app. The terms of WhatsApp (Meta) or your email provider also apply to that communication.</p>
+
+            <h2>Cookies and analytics</h2>
+            <p>This website uses no advertising or analytics cookies and does not track you. The server may briefly log technical data (e.g. IP address and time of the request) to keep the site running and prevent abuse (legitimate interest, Art. 6(1)(f) GDPR).</p>
+
+            <h2>How long we keep data</h2>
+            <p>Communication data is kept only as long as needed to handle the request and the transport. Accounting documents are kept for the period required by law (usually 10 years).</p>
+
+            <h2>Who we share data with</h2>
+            <p>We do not sell your data or share it with third parties for marketing. It may only be processed by the providers of the services you use to contact us (e.g. WhatsApp, email) and by public authorities where the law requires it.</p>
+
+            <h2>Your rights</h2>
+            <p>You have the right to access, correct and delete your data, to restrict processing, to data portability and to object. Just write to <a href={`mailto:${business.email}`}>{business.email}</a>. If you believe your data is processed unlawfully, you can lodge a complaint with the Office for Personal Data Protection of the Slovak Republic, Hraničná 12, 820 07 Bratislava (<a href="https://dataprotection.gov.sk" rel="noopener" target="_blank">dataprotection.gov.sk</a>).</p>
+          </>
+        )
+      }
+      <p class="legal__back"><a href={routes.home[lang]}>{t.privacy.back}</a></p>
+    </article>
+  </main>
+  <Footer lang={lang} />
+</Base>
+
+<style>
+  .legal {
+    max-width: 820px;
+  }
+  .legal :global(h2) {
+    margin-top: 36px;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+  .legal :global(p) {
+    margin-top: 12px;
+    color: var(--ink-soft);
+  }
+  .legal :global(.legal__note) {
+    margin-top: 24px;
+    padding: 12px 16px;
+    border-left: 4px solid var(--red);
+    background: var(--red-soft);
+    color: var(--ink);
+  }
+  .legal__back {
+    margin-top: 40px !important;
+    font-weight: 600;
+  }
+  @media (max-width: 900px) {
+    .legal {
+      padding-bottom: 20px;
+    }
+  }
+</style>

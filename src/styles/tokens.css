@@ -1,0 +1,27 @@
+/* Colours taken from René's business card. */
+:root {
+  --red: #e32b2b;
+  --red-dark: #b81f1f;
+  --red-soft: #fdecec;
+  --ink: #2a2a2a;
+  --ink-soft: #555b63;
+  --muted: #666b73;
+  --line: #e3e5e8;
+  --bg: #ffffff;
+  --bg-alt: #f2f3f5;
+  --road: #3a3d42;
+  --white: #ffffff;
+  --whatsapp: #15803d;
+
+  --font: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+
+  --radius: 14px;
+  --radius-pill: 999px;
+  --shadow: 0 10px 30px rgba(20, 22, 26, 0.08);
+  --shadow-strong: 0 14px 40px rgba(20, 22, 26, 0.14);
+
+  --container: 1180px;
+  --gutter: clamp(16px, 4vw, 32px);
+  --header-h: 68px;
+  --section-y: clamp(64px, 9vw, 112px);
+}

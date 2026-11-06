@@ -1,0 +1,111 @@
+---
+import { Icon } from 'astro-icon/components';
+import Logo from './Logo.astro';
+import { business } from '../data/business';
+import { routes, useTranslations, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+const a = business.address;
+const socials = [
+  { href: business.social.facebook, icon: 'mdi:facebook', label: 'Facebook' },
+  { href: business.social.instagram, icon: 'mdi:instagram', label: 'Instagram' },
+].filter((s) => s.href);
+---
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <Logo href={routes.home[lang]} invert />
+      <p class="footer__legal">
+        {business.legalName} – {business.brand}<br />
+        {a.street}, {a.postalCode} {a.city}<br />
+        {t.footer.ico}: {business.ico} · {t.footer.dic}: {business.dic}<br />
+        {t.footer.registered} {t.footer.notVat}
+      </p>
+    </div>
+    <div class="footer__contact">
+      <a href={business.phoneHref}><Icon name="mdi:phone" aria-hidden="true" />{business.phone}</a>
+      <a href={`mailto:${business.email}`}><Icon name="mdi:email-outline" aria-hidden="true" />{business.email}</a>
+      {
+        socials.length > 0 && (
+          <div class="footer__social">
+            {socials.map((s) => (
+              <a href={s.href} target="_blank" rel="noopener" aria-label={s.label}>
+                <Icon name={s.icon} aria-hidden="true" />
+              </a>
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </div>
+  <div class="container footer__bottom">
+    <span>© {year} {business.brand}. {t.footer.rights}</span>
+    <a href={routes.privacy[lang]}>{t.footer.privacy}</a>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: #1e1f22;
+    color: #c9ccd1;
+    padding-top: 56px;
+    font-size: 0.93rem;
+  }
+  .footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 32px;
+    padding-bottom: 36px;
+    border-bottom: 1px solid #34363b;
+  }
+  .footer__legal {
+    margin-top: 16px;
+    line-height: 1.75;
+  }
+  .footer__contact {
+    display: grid;
+    gap: 12px;
+    align-content: start;
+  }
+  .footer a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .footer a:hover {
+    color: #ff6b6b;
+  }
+  .footer svg {
+    width: 20px;
+    height: 20px;
+    color: var(--red);
+  }
+  .footer__social {
+    display: flex;
+    gap: 12px;
+  }
+  .footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+    padding-block: 20px;
+    color: #8d9198;
+    font-size: 0.85rem;
+  }
+  .footer__bottom a {
+    color: #c9ccd1;
+    text-decoration: underline;
+  }
+  @media (max-width: 900px) {
+    .footer {
+      padding-bottom: 76px; /* room for the sticky call bar */
+    }
+  }
+</style>

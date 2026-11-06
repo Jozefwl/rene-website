@@ -1,0 +1,39 @@
+# TLS from Let's Encrypt via the existing ClusterIssuer (HTTP-01 solver on the traefik ingress class).
+# DNS for rrautodoprava.sk + www must point at the cluster before the first sync.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rene-website
+  namespace: apps
+  labels:
+    app: rene-website
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - rrautodoprava.sk
+        - www.rrautodoprava.sk
+      secretName: rrautodoprava-sk-tls
+  rules:
+    - host: rrautodoprava.sk
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rene-website
+                port:
+                  number: 80
+    - host: www.rrautodoprava.sk
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rene-website
+                port:
+                  number: 80

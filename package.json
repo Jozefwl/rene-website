@@ -1,0 +1,28 @@
+{
+  "name": "rene-website",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "author": "Jozef Waldhauser",
+  "description": "R&R Autodoprava – website for René Rilák",
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "start": "node serve.mjs",
+    "preview": "astro build && node serve.mjs",
+    "test": "vitest run && node --test \"test/*.test.mjs\"",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "astro": "7.4.7",
+    "astro-icon": "1.2.0",
+    "@iconify-json/mdi": "1.2.3",
+    "@fontsource/poppins": "5.3.0"
+  },
+  "devDependencies": {
+    "vitest": "5.1.0"
+  }
+}

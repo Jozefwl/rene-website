@@ -1,0 +1,22 @@
+# Apply once (kubectl apply -f k8s/argocd-application.yaml) if ArgoCD is set up per repo,
+# or move it to applications-waldoserver. Check against how website-blog is configured.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rene-website
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Jozefwl/rene-website.git
+    targetRevision: main
+    path: k8s
+    directory:
+      exclude: argocd-application.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: apps
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

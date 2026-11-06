@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Van from '../components/Van.astro';
+import sk from '../i18n/sk';
+import en from '../i18n/en';
+---
+
+<Base lang="sk" page="home" title={`404 – ${sk.notFound.title}`} description={sk.notFound.text} noindex>
+  <Header lang="sk" page="home" />
+  <main class="section nf">
+    <div class="container nf__inner">
+      <Van id="nf-van" label={sk.a11y.vanAlt} class="nf__van" />
+      <h1 class="section-title">404 – {sk.notFound.title}</h1>
+      <p class="section-lead">{sk.notFound.text}</p>
+      <p class="nf__en" lang="en">{en.notFound.title}. {en.notFound.text}</p>
+      <div class="nf__cta">
+        <a class="btn btn--red" href="/">{sk.notFound.back}</a>
+        <a class="btn btn--outline" href="/en/" lang="en">{en.notFound.back}</a>
+      </div>
+    </div>
+  </main>
+  <Footer lang="sk" />
+</Base>
+
+<style>
+  .nf__van {
+    width: min(420px, 90%);
+    margin-bottom: 32px;
+    transform: rotate(-3deg);
+  }
+  .nf__en {
+    margin-top: 8px;
+    color: var(--muted);
+  }
+  .nf__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+</style>

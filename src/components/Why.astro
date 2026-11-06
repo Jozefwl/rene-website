@@ -1,0 +1,54 @@
+---
+import { Icon } from 'astro-icon/components';
+import { useTranslations, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const t = useTranslations(Astro.props.lang);
+---
+
+<section class="section why" aria-labelledby="why-title">
+  <div class="container">
+    <h2 id="why-title" class="section-title reveal">{t.why.title}</h2>
+    <ul class="why__list">
+      {
+        t.why.items.map((w) => (
+          <li class="reveal">
+            <span class="icon-circle"><Icon name={w.icon} aria-hidden="true" /></span>
+            <div>
+              <h3>{w.title}</h3>
+              <p>{w.text}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .why {
+    background: var(--ink);
+    color: var(--white);
+  }
+  .why__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: 32px;
+    margin: 44px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  li {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  p {
+    margin-top: 6px;
+    color: #c9ccd1;
+    font-size: 0.96rem;
+  }
+</style>
