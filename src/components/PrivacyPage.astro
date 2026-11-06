@@ -9,10 +9,10 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const a = business.address;
-const controller = `${business.legalName} – ${business.brand}, ${a.street}, ${a.postalCode} ${a.city}, IČO ${business.ico}`;
+const controller = `${business.legalName}, ${business.brand}, ${a.street}, ${a.postalCode} ${a.city}, IČO ${business.ico}`;
 ---
 
-<Base lang={lang} page="privacy" title={`${t.privacy.title} – ${business.brand}`} description={t.privacy.metaDescription}>
+<Base lang={lang} page="privacy" title={`${t.privacy.title} | ${business.brand}`} description={t.privacy.metaDescription}>
   <a class="skip-link" href="#obsah">{t.a11y.skip}</a>
   <Header lang={lang} page="privacy" />
   <main id="obsah" class="section">
@@ -27,8 +27,8 @@ const controller = `${business.legalName} – ${business.brand}, ${a.street}, ${
             <p>{controller}.<br />Kontakt: <a href={`mailto:${business.email}`}>{business.email}</a>, <a href={business.phoneHref}>{business.phone}</a>.</p>
 
             <h2>Aké údaje spracúvame a prečo</h2>
-            <p>Keď nás kontaktujete telefonicky, cez WhatsApp alebo e-mailom, spracúvame údaje, ktoré nám sami poskytnete – meno, telefónne číslo, e-mail, adresy nakládky a vykládky, termín a popis prepravy. Používame ich iba na vybavenie vašej požiadavky, prípravu cenovej ponuky a vykonanie prepravy (čl. 6 ods. 1 písm. b) GDPR – opatrenia pred uzavretím zmluvy a plnenie zmluvy).</p>
-            <p>Ak vystavíme faktúru, údaje na nej uchovávame podľa zákona o účtovníctve (čl. 6 ods. 1 písm. c) GDPR – zákonná povinnosť).</p>
+            <p>Keď nás kontaktujete telefonicky, cez WhatsApp alebo e-mailom, spracúvame údaje, ktoré nám sami poskytnete: meno, telefónne číslo, e-mail, adresy nakládky a vykládky, termín a popis prepravy. Používame ich iba na vybavenie vašej požiadavky, prípravu cenovej ponuky a vykonanie prepravy (opatrenia pred uzavretím zmluvy a plnenie zmluvy, čl. 6 ods. 1 písm. b) GDPR).</p>
+            <p>Ak vystavíme faktúru, údaje na nej uchovávame podľa zákona o účtovníctve (zákonná povinnosť, čl. 6 ods. 1 písm. c) GDPR).</p>
 
             <h2>Formulár na stránke</h2>
             <p>Formulár „Nezáväzná cenová ponuka“ neodosiela údaje na náš server a nič neukladá. Iba z vyplnených polí pripraví správu, ktorú potom sami odošlete cez WhatsApp alebo vašu e-mailovú aplikáciu. Na takúto komunikáciu sa vzťahujú aj podmienky služby WhatsApp (Meta) alebo vášho poskytovateľa e-mailu.</p>
@@ -54,8 +54,8 @@ const controller = `${business.legalName} – ${business.brand}, ${a.street}, ${
             <p>{controller}.<br />Contact: <a href={`mailto:${business.email}`}>{business.email}</a>, <a href={business.phoneHref}>{business.phone}</a>.</p>
 
             <h2>What data we process and why</h2>
-            <p>When you contact us by phone, WhatsApp or email, we process the data you give us – name, phone number, email, pick-up and delivery addresses, date and a description of the transport. We use it only to handle your request, prepare a quote and carry out the transport (Art. 6(1)(b) GDPR – pre-contractual steps and performance of a contract).</p>
-            <p>If we issue an invoice, the data on it is kept as required by Slovak accounting law (Art. 6(1)(c) GDPR – legal obligation).</p>
+            <p>When you contact us by phone, WhatsApp or email, we process the data you give us: name, phone number, email, pick-up and delivery addresses, date and a description of the transport. We use it only to handle your request, prepare a quote and carry out the transport (pre-contractual steps and performance of a contract, Art. 6(1)(b) GDPR).</p>
+            <p>If we issue an invoice, the data on it is kept as required by Slovak accounting law (legal obligation, Art. 6(1)(c) GDPR).</p>
 
             <h2>The form on this website</h2>
             <p>The “Free quote request” form does not send data to our server and stores nothing. It only prepares a message from the fields you fill in, which you then send yourself via WhatsApp or your email app. The terms of WhatsApp (Meta) or your email provider also apply to that communication.</p>

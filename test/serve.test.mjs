@@ -77,3 +77,17 @@ test('compresses HTML when the client accepts gzip', async () => {
   assert.equal(res.headers.get('content-encoding'), 'gzip');
   assert.match(await res.text(), /<html lang="sk"/);
 });
+
+test('built pages contain no dashes (– —) in visible text', async () => {
+  const fs = await import('node:fs');
+  const pages = ['index.html', 'en/index.html', 'ochrana-osobnych-udajov/index.html', 'en/privacy/index.html', '404.html'];
+  for (const page of pages) {
+    const html = fs.readFileSync(path.join(root, page), 'utf8');
+    const text = html
+      .replace(/<script[\s\S]*?<\/script>/g, ' ')
+      .replace(/<style[\s\S]*?<\/style>/g, ' ')
+      .replace(/<[^>]+>/g, ' ');
+    const titleAndMeta = [...html.matchAll(/<title>([^<]*)<\/title>|content="([^"]*)"/g)].map((m) => m[1] ?? m[2]).join(' ');
+    assert.doesNotMatch(text + ' ' + titleAndMeta, /[–—]/, page);
+  }
+});

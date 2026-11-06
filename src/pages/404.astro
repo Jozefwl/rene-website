@@ -7,12 +7,12 @@ import sk from '../i18n/sk';
 import en from '../i18n/en';
 ---
 
-<Base lang="sk" page="home" title={`404 – ${sk.notFound.title}`} description={sk.notFound.text} noindex>
+<Base lang="sk" page="home" title={`${sk.notFound.title} | R&R Autodoprava`} description={sk.notFound.text} noindex>
   <Header lang="sk" page="home" />
   <main class="section nf">
     <div class="container nf__inner">
       <div class="nf__van"><TruckIcon label={sk.a11y.vanAlt} /></div>
-      <h1 class="section-title">404 – {sk.notFound.title}</h1>
+      <h1 class="section-title">{sk.notFound.title}</h1>
       <p class="section-lead">{sk.notFound.text}</p>
       <p class="nf__en" lang="en">{en.notFound.title}. {en.notFound.text}</p>
       <div class="nf__cta">

@@ -35,6 +35,12 @@ describe('translations', () => {
     expect(empty(en as unknown as Json)).toEqual([]);
   });
 
+  it('contains no dashes (– —) and no "·" separators', () => {
+    for (const dict of [sk, en]) {
+      expect(JSON.stringify(dict)).not.toMatch(/[–—·]/);
+    }
+  });
+
   it('contains no emoji', () => {
     expect(JSON.stringify(sk)).not.toMatch(emoji);
     expect(JSON.stringify(en)).not.toMatch(emoji);
