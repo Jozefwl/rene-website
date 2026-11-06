@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import VanFlat from '../components/VanFlat.astro';
+import TruckIcon from '../components/TruckIcon.astro';
 import sk from '../i18n/sk';
 import en from '../i18n/en';
 ---
@@ -11,7 +11,7 @@ import en from '../i18n/en';
   <Header lang="sk" page="home" />
   <main class="section nf">
     <div class="container nf__inner">
-      <VanFlat label={sk.a11y.vanAlt} class="nf__van" />
+      <div class="nf__van"><TruckIcon label={sk.a11y.vanAlt} /></div>
       <h1 class="section-title">404 – {sk.notFound.title}</h1>
       <p class="section-lead">{sk.notFound.text}</p>
       <p class="nf__en" lang="en">{en.notFound.title}. {en.notFound.text}</p>
@@ -26,9 +26,8 @@ import en from '../i18n/en';
 
 <style>
   .nf__van {
-    width: min(420px, 90%);
+    width: min(340px, 80%);
     margin-bottom: 32px;
-    transform: rotate(-3deg);
   }
   .nf__en {
     margin-top: 8px;
