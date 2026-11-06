@@ -1,0 +1,55 @@
+---
+// Simple flat side view of the van (red silhouette, like the truck icon on the back of René's
+// business card). Peugeot Boxer L4H2 proportions, 100 units ≈ 1 m, facing left.
+interface Props {
+  label: string;
+  class?: string;
+  /** Cargo-space dimension arrows with black labels. */
+  dims?: { length: string; height: string };
+}
+const { label, class: className, dims } = Astro.props;
+const viewBox = dims ? '-10 -60 730 330' : '-10 -6 660 272';
+const body =
+  'M8 226 C4 214 3 200 5 186 C7 172 10 163 18 156 C40 146 78 136 116 128 L164 58 C170 48 178 40 192 34 L232 14 C240 9 248 6 262 6 L622 6 C632 6 636 12 636 20 L636 220 C636 226 632 230 626 230 L548 230 A46 46 0 0 0 454 230 L144 230 A46 46 0 0 0 50 230 Z';
+const ink = '#2a2a2a';
+---
+
+<svg class:list={['van-flat', className]} viewBox={viewBox} role="img" aria-label={label} xmlns="http://www.w3.org/2000/svg">
+  <path d={body} fill="#e32b2b"></path>
+  <!-- cab window -->
+  <path d="M136 124 L176 64 C180 58 186 55 194 55 L222 55 L222 124 Z" fill="#fff"></path>
+  <!-- wheels: red with a white gap ring and white hub, like on the card -->
+  {
+    [97, 501].map((x) => (
+      <g>
+        <circle cx={x} cy="222" r="38" fill="#e32b2b" stroke="#fff" stroke-width="8" />
+        <circle cx={x} cy="222" r="12" fill="#fff" />
+      </g>
+    ))
+  }
+
+  {
+    dims && (
+      <g font-family="Poppins, Arial, sans-serif" font-weight="700" font-size="24" fill={ink}>
+        <g stroke={ink} stroke-width="2.5" fill="none" stroke-linecap="round">
+          <path d="M232 -26 L632 -26" />
+          <path d="M232 -38 L232 -14 M632 -38 L632 -14" />
+          <path d="M246 -34 L232 -26 L246 -18 M618 -34 L632 -26 L618 -18" />
+          <path d="M666 10 L666 206" />
+          <path d="M654 10 L678 10 M654 206 L678 206" />
+          <path d="M658 24 L666 10 L674 24 M658 192 L666 206 L674 192" />
+        </g>
+        <text x="432" y="-38" text-anchor="middle">{dims.length}</text>
+        <text x="0" y="0" text-anchor="middle" transform="translate(702 108) rotate(-90)">{dims.height}</text>
+      </g>
+    )
+  }
+</svg>
+
+<style>
+  .van-flat {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+</style>

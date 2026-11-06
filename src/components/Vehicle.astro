@@ -1,6 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
-import Van from './Van.astro';
+import VanFlat from './VanFlat.astro';
 import { useTranslations, type Lang } from '../i18n';
 interface Props { lang: Lang }
 const t = useTranslations(Astro.props.lang);
@@ -12,7 +12,7 @@ const t = useTranslations(Astro.props.lang);
     <p class="section-lead reveal">{t.vehicle.lead}</p>
     <div class="vehicle">
       <div class="vehicle__drawing reveal">
-        <Van id="spec-van" label={t.a11y.vanAlt} dims={{ length: t.vehicle.dimLength, height: t.vehicle.dimHeight }} />
+        <VanFlat label={t.a11y.vanAlt} dims={{ length: t.vehicle.dimLength, height: t.vehicle.dimHeight }} />
       </div>
       <div class="vehicle__info reveal">
         <dl class="specs">

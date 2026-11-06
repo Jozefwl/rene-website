@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import Van from '../components/Van.astro';
+import VanFlat from '../components/VanFlat.astro';
 import sk from '../i18n/sk';
 import en from '../i18n/en';
 ---
@@ -11,7 +11,7 @@ import en from '../i18n/en';
   <Header lang="sk" page="home" />
   <main class="section nf">
     <div class="container nf__inner">
-      <Van id="nf-van" label={sk.a11y.vanAlt} class="nf__van" />
+      <VanFlat label={sk.a11y.vanAlt} class="nf__van" />
       <h1 class="section-title">404 – {sk.notFound.title}</h1>
       <p class="section-lead">{sk.notFound.text}</p>
       <p class="nf__en" lang="en">{en.notFound.title}. {en.notFound.text}</p>

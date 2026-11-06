@@ -19,34 +19,16 @@ const wa = whatsappLink();
 const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/van.{png,webp}', { eager: true });
 const vanPhoto = Object.values(photos)[0]?.default;
 // Red graphic like on the business card (one connected shape, see RedGraphic.astro).
-const wideBands = [
-  ['finger', 0, 70, 560],
-  ['gap', 70, 118, 760],
-  ['finger', 118, 186, 400],
-  ['gap', 186, 234, 650],
-  ['finger', 234, 306, 250],
-  ['gap', 306, 352, 560],
-  ['finger', 352, 420, 360],
-  ['gap', 420, 466, 700],
-  ['finger', 466, 900, 600],
-  ['pill', 520, 566, 170, 560],
-  ['pill', 640, 688, 80, 520],
-] as const;
-const stageBands = [
-  ['finger', 0, 40, 470],
-  ['gap', 40, 66, 580],
-  ['finger', 66, 110, 420],
-  ['gap', 110, 136, 560],
-  ['finger', 136, 180, 440],
-  ['gap', 180, 206, 570],
-  ['finger', 206, 600, 300],
-  ['pill', 262, 292, 110, 250],
-] as const;
+// Finger left ends, top to bottom (viewBox units). Desktop: 900 × 900, phone: 600 × 600.
+const wide = { width: 900, height: 900, finger: 52, gap: 16, solid: 120, reach: [170, 120, 200, 140],
+  lefts: [560, 420, 300, 380, 260, 330, 230, 300, 200, 270, 220, 290, 240, 310] };
+const stage = { width: 600, height: 600, finger: 36, gap: 11, solid: 80, reach: [120, 90, 140, 100],
+  lefts: [450, 410, 440, 415, 430, 250, 300, 210, 265, 215, 275, 230, 280] };
 ---
 
 <section class="hero" aria-labelledby="hero-title" data-hero>
   <div class="hero__stripes hero__stripes--wide" aria-hidden="true">
-    <RedGraphic id="red-wide" width={900} height={900} bands={wideBands as any} />
+    <RedGraphic id="red-wide" {...wide} />
   </div>
 
   <div class="container hero__inner">
@@ -86,7 +68,7 @@ const stageBands = [
 
     <div class:list={['hero__stage', { 'hero__stage--photo': vanPhoto }]}>
       <div class="hero__stripes hero__stripes--stage" aria-hidden="true">
-        <RedGraphic id="red-stage" width={600} height={600} bands={stageBands as any} />
+        <RedGraphic id="red-stage" {...stage} />
       </div>
       <svg class="hero__city" viewBox="0 0 600 220" aria-hidden="true" preserveAspectRatio="xMidYMax slice">
         <g fill="#c9ccd1">
