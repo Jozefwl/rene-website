@@ -20,10 +20,10 @@ const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/van.{png,
 const vanPhoto = Object.values(photos)[0]?.default;
 // Red graphic like on the business card (one connected shape, see RedGraphic.astro).
 // Finger left ends, top to bottom (viewBox units). Desktop: 900 × 900, phone: 600 × 600.
-const wide = { width: 900, height: 900, finger: 52, gap: 16, solid: 120, reach: [170, 120, 200, 140],
-  lefts: [560, 420, 300, 380, 260, 330, 230, 300, 200, 270, 220, 290, 240, 310] };
-const stage = { width: 600, height: 600, finger: 36, gap: 11, solid: 80, reach: [120, 90, 140, 100],
-  lefts: [450, 410, 440, 415, 430, 250, 300, 210, 265, 215, 275, 230, 280] };
+const wide = { width: 900, height: 900, finger: 52, gap: 16, solid: 100, reach: [130, 100, 150, 110],
+  lefts: [720, 600, 500, 560, 470, 530, 440, 500, 420, 480, 430, 490, 450, 500] };
+const stage = { width: 600, height: 600, finger: 36, gap: 11, solid: 60, reach: [90, 70, 100, 80],
+  lefts: [480, 450, 470, 450, 460, 360, 400, 330, 375, 340, 385, 350, 390] };
 ---
 
 <section class="hero" aria-labelledby="hero-title" data-hero>

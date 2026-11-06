@@ -4,7 +4,7 @@ const en: Dict = {
   meta: {
     title: 'R&R Autodoprava – goods delivery and moving, Humenné (Slovakia)',
     description:
-      'Goods delivery, furniture and building material transport, moving and waste removal with a van up to 3.5 t. Humenné and surroundings, anywhere in Slovakia by agreement.',
+      'Goods delivery, furniture and building material transport, and moving with a van up to 3.5 t. Humenné and surroundings, anywhere in Slovakia by agreement.',
     ogAlt: 'R&R Autodoprava – reliable goods delivery, Humenné and surroundings',
   },
   a11y: {
@@ -35,13 +35,12 @@ const en: Dict = {
   services: {
     title: 'Services',
     lead: 'We transport what you need – for households and businesses.',
-    more: 'Show service details',
-    less: 'Hide details',
+    more: 'Show services',
+    less: 'Hide services',
     items: [
       { icon: 'mdi:package-variant-closed', title: 'Goods delivery', text: 'For private customers and companies – from a shop, warehouse or e-shop straight to you.' },
       { icon: 'mdi:sofa', title: 'Furniture and building material', text: 'Transport of furniture, appliances, building material and larger items.' },
       { icon: 'mdi:home-export-outline', title: 'Moving', text: 'Moving flats, houses, offices and companies.' },
-      { icon: 'mdi:trash-can-outline', title: 'Waste removal', text: 'Removal of old furniture, renovation waste and things you no longer need.' },
       { icon: 'mdi:truck-fast', title: 'Express transport', text: 'When it’s urgent – fast transport anywhere in Slovakia.' },
       { icon: 'mdi:dolly', title: 'Loading and unloading', text: 'Help with loading and unloading by agreement.' },
     ],

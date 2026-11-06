@@ -10,9 +10,19 @@ const t = useTranslations(Astro.props.lang);
     <h2 id="services-title" class="section-title reveal">{t.services.title}</h2>
     <p class="section-lead reveal">{t.services.lead}</p>
 
-    <!-- Bullet list of services; one button shows / hides all descriptions.
-         Without JavaScript the descriptions are simply always visible. -->
-    <ul class="services reveal" id="services-list" data-services>
+    <!-- The whole list is hidden under one button. Without JavaScript the list is simply visible. -->
+    <button
+      class="btn btn--outline services__toggle reveal"
+      type="button"
+      aria-controls="services-list"
+      aria-expanded="false"
+      data-services-toggle
+      data-more={t.services.more}
+      data-less={t.services.less}>
+      <span data-services-label>{t.services.more}</span>
+      <Icon name="mdi:chevron-down" class="services__chevron" aria-hidden="true" />
+    </button>
+    <ul class="services" id="services-list" data-services>
       {
         t.services.items.map((s) => (
           <li class="service">
@@ -28,17 +38,6 @@ const t = useTranslations(Astro.props.lang);
       }
     </ul>
 
-    <button
-      class="btn btn--outline services__toggle reveal"
-      type="button"
-      aria-controls="services-list"
-      aria-expanded="false"
-      data-services-toggle
-      data-more={t.services.more}
-      data-less={t.services.less}>
-      <span data-services-label>{t.services.more}</span>
-      <Icon name="mdi:chevron-down" class="services__chevron" aria-hidden="true" />
-    </button>
   </div>
 </section>
 
@@ -59,7 +58,7 @@ const t = useTranslations(Astro.props.lang);
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 4px 40px;
-    margin: 32px 0 0;
+    margin: 24px 0 0;
     padding: 0;
     list-style: none;
   }
@@ -94,23 +93,23 @@ const t = useTranslations(Astro.props.lang);
     margin-top: 6px;
     color: var(--ink-soft);
   }
-  /* With JS: descriptions hidden until the button is pressed. */
-  :global(.js) .service__text {
+  /* With JS: the whole list is hidden until the button is pressed. */
+  :global(.js) .services {
     display: none;
   }
-  :global(.js) .services.is-open .service__text {
-    display: block;
-    animation: show 0.25s ease-out;
+  :global(.js) .services.is-open {
+    display: grid;
+    animation: show 0.3s ease-out;
   }
   @keyframes show {
     from {
       opacity: 0;
-      transform: translateY(-4px);
+      transform: translateY(-6px);
     }
   }
   .services__toggle {
     display: none;
-    margin-top: 24px;
+    margin-top: 28px;
   }
   :global(.js) .services__toggle {
     display: inline-flex;
@@ -127,7 +126,7 @@ const t = useTranslations(Astro.props.lang);
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    :global(.js) .services.is-open .service__text {
+    :global(.js) .services.is-open {
       animation: none;
     }
   }

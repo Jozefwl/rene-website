@@ -2,7 +2,7 @@ const sk = {
   meta: {
     title: 'R&R Autodoprava – rozvoz tovaru a sťahovanie Humenné',
     description:
-      'Rozvoz tovaru, preprava nábytku a stavebného materiálu, sťahovanie a odvoz odpadu dodávkou do 3,5 t. Humenné a okolie, po dohode celé Slovensko. Volajte +421 949 320 426.',
+      'Rozvoz tovaru, preprava nábytku a stavebného materiálu a sťahovanie dodávkou do 3,5 t. Humenné a okolie, po dohode celé Slovensko. Volajte +421 949 320 426.',
     ogAlt: 'R&R Autodoprava – spoľahlivý rozvoz tovaru, Humenné a okolie',
   },
   a11y: {
@@ -33,13 +33,12 @@ const sk = {
   services: {
     title: 'Služby',
     lead: 'Prevezieme, čo potrebujete – pre domácnosti aj firmy.',
-    more: 'Zobraziť popis služieb',
-    less: 'Skryť popis',
+    more: 'Zobraziť služby',
+    less: 'Skryť služby',
     items: [
       { icon: 'mdi:package-variant-closed', title: 'Rozvoz tovaru', text: 'Pre súkromné osoby aj firmy – z obchodu, skladu či e-shopu priamo k vám.' },
       { icon: 'mdi:sofa', title: 'Nábytok a stavebný materiál', text: 'Preprava nábytku, spotrebičov, stavebného materiálu a väčších kusov.' },
       { icon: 'mdi:home-export-outline', title: 'Sťahovanie', text: 'Sťahovanie bytov, domov, kancelárií a firiem.' },
-      { icon: 'mdi:trash-can-outline', title: 'Odvoz odpadu', text: 'Odvoz starého nábytku, odpadu z rekonštrukcie a nepotrebných vecí.' },
       { icon: 'mdi:truck-fast', title: 'Expresná preprava', text: 'Keď to horí – rýchla preprava po celom Slovensku.' },
       { icon: 'mdi:dolly', title: 'Nakládka a vykládka', text: 'Pomoc s nakládkou a vykládkou podľa dohody.' },
     ],
