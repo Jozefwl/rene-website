@@ -39,18 +39,5 @@ npm run preview            # production-like: build + node serve.mjs on http://l
 
 Change business details in `src/data/business.ts`, texts in `src/i18n/`.
 Facebook / Instagram: fill `social` in `business.ts` and the icons appear in the footer.
-
-## Deploy (later, once rrautodoprava.sk is live)
-Same flow as website-blog: run the **Build and Deploy** workflow with a version →
-self-hosted runner bumps `package.json`, updates `k8s/deployment.yaml`, builds and pushes
-`harbor.waldoserver.top/cloud/rene-website:<version>`, commits, ArgoCD syncs `k8s/`.
-
-Before the first release:
-- repo secrets `HARBOR_USERNAME`, `HARBOR_PASSWORD`
-- DNS A records `rrautodoprava.sk` + `www` → cluster (needed for the Let's Encrypt HTTP-01 challenge)
-- ArgoCD application (`k8s/argocd-application.yaml`, or however website-blog is set up)
-
-Manual build:
-```bash
 docker buildx build --platform linux/amd64 -t harbor.waldoserver.top/cloud/rene-website:latest --push .
 ```
