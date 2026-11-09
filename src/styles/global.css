@@ -150,15 +150,16 @@ p {
     grid-template-columns: 1fr;
     width: 100%;
   }
+
+  /* Narrow forms: less side padding so labels stay on one line. */
+  .btn-row > .btn {
+    padding-inline: 16px;
+  }
 }
 
 .btn--red {
   background: var(--red);
   color: var(--white);
-}
-
-.btn--red:hover {
-  background: var(--red-dark);
 }
 
 .btn--outline {
@@ -167,18 +168,26 @@ p {
   border-color: var(--ink);
 }
 
-.btn--outline:hover {
-  background: var(--ink);
-  color: var(--white);
-}
-
 .btn--whatsapp {
   background: var(--whatsapp);
   color: var(--white);
 }
 
-.btn--whatsapp:hover {
-  background: #116b33;
+/* Hover colors only where a real pointer hovers. On touch screens :hover sticks
+   after a tap, so a tapped outline button would stay black. */
+@media (hover: hover) {
+  .btn--red:hover {
+    background: var(--red-dark);
+  }
+
+  .btn--outline:hover {
+    background: var(--ink);
+    color: var(--white);
+  }
+
+  .btn--whatsapp:hover {
+    background: #116b33;
+  }
 }
 
 .icon-circle {

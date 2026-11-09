@@ -16,10 +16,12 @@ const t = useTranslations(Astro.props.lang);
       type="button"
       aria-controls="services-list"
       aria-expanded="false"
-      data-services-toggle
-      data-more={t.services.more}
-      data-less={t.services.less}>
-      <span data-services-label>{t.services.more}</span>
+      data-services-toggle>
+      <!-- Both labels share one grid cell, so the button keeps the longer one's width. -->
+      <span class="services__labels">
+        <span class="services__label--more">{t.services.more}</span>
+        <span class="services__label--less">{t.services.less}</span>
+      </span>
       <Icon name="mdi:chevron-down" class="services__chevron" aria-hidden="true" />
     </button>
     <ul class="services" id="services-list" data-services>
@@ -44,12 +46,10 @@ const t = useTranslations(Astro.props.lang);
 <script>
   const list = document.querySelector<HTMLElement>('[data-services]');
   const btn = document.querySelector<HTMLButtonElement>('[data-services-toggle]');
-  const label = btn?.querySelector<HTMLElement>('[data-services-label]');
   btn?.addEventListener('click', () => {
     const open = btn.getAttribute('aria-expanded') !== 'true';
     btn.setAttribute('aria-expanded', String(open));
     list?.classList.toggle('is-open', open);
-    if (label) label.textContent = (open ? btn.dataset.less : btn.dataset.more) ?? '';
   });
 </script>
 
@@ -113,6 +113,16 @@ const t = useTranslations(Astro.props.lang);
   }
   :global(.js) .services__toggle {
     display: inline-flex;
+  }
+  .services__labels {
+    display: inline-grid;
+  }
+  .services__labels > span {
+    grid-area: 1 / 1;
+  }
+  .services__toggle[aria-expanded='false'] .services__label--less,
+  .services__toggle[aria-expanded='true'] .services__label--more {
+    visibility: hidden;
   }
   .services__toggle :global(.services__chevron) {
     transition: transform 0.25s;
