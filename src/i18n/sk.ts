@@ -36,28 +36,28 @@ const sk = {
     more: 'Zobraziť služby',
     less: 'Skryť služby',
     items: [
-      { icon: 'mdi:package-variant-closed', title: 'Rozvoz tovaru', text: 'Rozvoz tovaru z obchodov, skladov a e-shopov pre súkromné osoby aj firmy.' },
+      { icon: 'mdi:package-variant-closed', title: 'Rozvoz tovaru', text: 'Rozvoz z obchodov, skladov a e-shopov pre súkromné osoby aj firmy.' },
       { icon: 'mdi:sofa', title: 'Preprava nábytku a stavebného materiálu', text: 'Preprava nábytku, spotrebičov, stavebného materiálu a rozmerných predmetov.' },
-      { icon: 'mdi:home-export-outline', title: 'Sťahovanie', text: 'Sťahovanie bytov, domov, kancelárií a firiem.' },
-      { icon: 'mdi:truck-fast', title: 'Expresná preprava', text: 'Expresná preprava po celom Slovensku.' },
+      { icon: 'mdi:home-export-outline', title: 'Sťahovanie', text: 'Sťahovanie bytov, domov, kancelárií a firemných priestorov.' },
+      { icon: 'mdi:truck-fast', title: 'Expresná preprava', text: 'Kamkoľvek na Slovensku.' },
       { icon: 'mdi:dolly', title: 'Nakládka a vykládka', text: 'Pomoc s nakládkou a vykládkou podľa dohody.' },
     ],
   },
   why: {
-    title: 'Výhody R&R Autodopravy',
+    title: 'Prečo R&R Autodoprava',
     items: [
-      { icon: 'mdi:shield-check', title: 'Spoľahlivý prístup', text: 'Dodržiavame dohodnuté termíny a podmienky. S nákladom zaobchádzame opatrne.' },
-      { icon: 'mdi:clock-outline', title: 'Dochvíľnosť', text: 'Na nakládku prichádzame v dohodnutom čase. O prípadnej zmene informujeme vopred.' },
-      { icon: 'mdi:lightning-bolt', title: 'Rýchle vybavenie objednávky', text: 'Termín a cenu dohodneme telefonicky alebo správou.' },
-      { icon: 'mdi:calendar-check', title: 'Dostupnosť aj cez víkend', text: 'Prevádzka aj v sobotu, v nedeľu po dohode. Naliehavé prepravy aj mimo pracovného času.' },
+      { icon: 'mdi:shield-check', title: 'Spoľahlivosť', text: 'Dodržiavame dohodnuté termíny a podmienky a s nákladom zaobchádzame opatrne.' },
+      { icon: 'mdi:clock-outline', title: 'Dochvíľnosť', text: 'Na nakládku prichádzame v dohodnutom čase a o prípadnej zmene vás vopred informujeme.' },
+      { icon: 'mdi:lightning-bolt', title: 'Rýchle vybavenie objednávky', text: 'Termín a cenu dohodneme jedným telefonátom alebo správou.' },
+      { icon: 'mdi:calendar-check', title: 'Dostupnosť aj cez víkend', text: 'Pracujeme aj v sobotu, v nedeľu po dohode. Naliehavé prepravy zabezpečíme aj mimo pracovného času.' },
     ],
   },
   how: {
     title: 'Postup objednávky',
     steps: [
-      { title: 'Kontakt', text: 'Telefonicky, cez WhatsApp alebo e-mailom. Uveďte, čo treba prepraviť, odkiaľ a kam.' },
-      { title: 'Cena a termín', text: 'Cenu stanovíme vopred podľa vzdialenosti a objemu nákladu.' },
-      { title: 'Preprava', text: 'Náklad prevezmeme v dohodnutom čase a doručíme na určené miesto.' },
+      { title: 'Kontakt', text: 'Kontaktujte nás telefonicky, cez WhatsApp alebo e-mailom a uveďte, čo treba prepraviť, odkiaľ a kam.' },
+      { title: 'Cena a termín', text: 'Cenu vám oznámime vopred. Určuje sa podľa vzdialenosti a objemu nákladu.' },
+      { title: 'Preprava', text: 'Náklad prevezmeme v dohodnutom čase a doručíme na uvedenú adresu.' },
     ],
   },
   vehicle: {
@@ -76,7 +76,7 @@ const sk = {
   },
   price: {
     title: 'Cena a platba',
-    text: 'Cena dohodou. Určuje sa podľa vzdialenosti, objemu nákladu a potreby pomoci s nakládkou. Cenovú ponuku poskytneme vopred.',
+    text: 'Cenu stanovujeme individuálne podľa vzdialenosti, objemu nákladu a potreby pomoci s nakládkou. Cenovú ponuku dostanete vopred.',
     payTitle: 'Možnosti platby',
     pay: [
       { icon: 'mdi:cash', label: 'Hotovosť' },
@@ -86,7 +86,7 @@ const sk = {
   },
   area: {
     title: 'Oblasť pôsobenia',
-    text: 'Vozidlo je v Humennom. Rozvoz zabezpečujeme v Humennom a okolí vrátane Sniny, Vranova nad Topľou, Strážskeho, Michaloviec, Stropkova, Svidníka, Prešova a Košíc. Po dohode preprava kamkoľvek na Slovensku.',
+    text: 'Vozidlo má základňu v Humennom. Rozvoz zabezpečujeme v Humennom a okolí vrátane Sniny, Vranova nad Topľou, Strážskeho, Michaloviec, Stropkova, Svidníka, Prešova a Košíc. Po dohode preprava kamkoľvek na Slovensku.',
     base: 'Základňa',
     whole: 'Po dohode celé Slovensko',
     domestic: 'Len vnútroštátna preprava.',
@@ -94,7 +94,7 @@ const sk = {
   },
   contact: {
     title: 'Kontakt',
-    lead: 'Cenovú ponuku a rezerváciu termínu vybavíte telefonicky, cez WhatsApp alebo e-mailom.',
+    lead: 'Cenovú ponuku a termín si môžete dohodnúť telefonicky, cez WhatsApp alebo e-mailom.',
     phoneLabel: 'Telefón',
     phoneHours: 'denne od 7:00 do 19:00',
     whatsappLabel: 'WhatsApp',
@@ -109,7 +109,7 @@ const sk = {
     languageNote: '',
     form: {
       title: 'Nezáväzná cenová ponuka',
-      hint: 'Vyplňte známe údaje. Správa sa odošle cez WhatsApp alebo e-mail. Údaje sa na stránke neukladajú.',
+      hint: 'Vyplňte známe údaje. Správa sa odošle cez WhatsApp alebo e-mail a na stránke sa žiadne údaje neukladajú.',
       from: 'Odkiaľ',
       fromPh: 'napr. Humenné',
       to: 'Kam',
@@ -122,11 +122,11 @@ const sk = {
       sendWhatsapp: 'Odoslať cez WhatsApp',
       sendEmail: 'Odoslať e-mailom',
       emailSubject: 'Cenová ponuka na prepravu',
-      emailFallback: 'Ak sa e-mailový program neotvoril, správu môžete poslať cez Gmail alebo ju skopírovať a poslať na',
+      emailFallback: 'Ak sa e-mailový program neotvoril, správu môžete odoslať cez Gmail alebo ju skopírovať a poslať na',
       openGmail: 'Otvoriť v Gmaile',
       copy: 'Kopírovať správu',
       copied: 'Skopírované',
-      noscript: 'Formulár potrebuje JavaScript. Zavolajte nám alebo napíšte na WhatsApp.',
+      noscript: 'Formulár vyžaduje JavaScript. Zavolajte nám, prosím, alebo napíšte na WhatsApp.',
     },
   },
   footer: {

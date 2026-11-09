@@ -34,32 +34,32 @@ const en: Dict = {
   },
   services: {
     title: 'Services',
-    lead: 'Goods transport for households and businesses.',
+    lead: 'We transport goods for households and businesses.',
     more: 'Show services',
     less: 'Hide services',
     items: [
-      { icon: 'mdi:package-variant-closed', title: 'Goods delivery', text: 'Delivery of goods from shops, warehouses and e-shops for private customers and companies.' },
-      { icon: 'mdi:sofa', title: 'Furniture and building material transport', text: 'Transport of furniture, appliances, building material and bulky items.' },
-      { icon: 'mdi:home-export-outline', title: 'Moving', text: 'Moving of flats, houses, offices and companies.' },
-      { icon: 'mdi:truck-fast', title: 'Express transport', text: 'Express transport anywhere in Slovakia.' },
+      { icon: 'mdi:package-variant-closed', title: 'Goods delivery', text: 'Delivery from shops, warehouses and e-shops for private customers and companies.' },
+      { icon: 'mdi:sofa', title: 'Furniture and building material transport', text: 'Transport of furniture, household appliances, building material and other bulky items.' },
+      { icon: 'mdi:home-export-outline', title: 'Moving', text: 'Moving of flats, houses, offices and company premises.' },
+      { icon: 'mdi:truck-fast', title: 'Express transport', text: 'Anywhere in Slovakia.' },
       { icon: 'mdi:dolly', title: 'Loading and unloading', text: 'Help with loading and unloading by agreement.' },
     ],
   },
   why: {
-    title: 'Benefits of R&R Autodoprava',
+    title: 'Why R&R Autodoprava',
     items: [
-      { icon: 'mdi:shield-check', title: 'Reliable approach', text: 'We keep to agreed dates and terms. Cargo is handled with care.' },
-      { icon: 'mdi:clock-outline', title: 'Punctuality', text: 'We arrive for loading at the agreed time. Any change is announced in advance.' },
-      { icon: 'mdi:lightning-bolt', title: 'Fast order handling', text: 'Date and price are agreed by phone or message.' },
-      { icon: 'mdi:calendar-check', title: 'Weekend availability', text: 'Service on Saturdays, Sundays by agreement. Urgent transport also outside working hours.' },
+      { icon: 'mdi:shield-check', title: 'Reliability', text: 'We keep to agreed dates and terms and handle your cargo with care.' },
+      { icon: 'mdi:clock-outline', title: 'Punctuality', text: 'We arrive for loading at the agreed time and inform you of any change in advance.' },
+      { icon: 'mdi:lightning-bolt', title: 'Fast booking', text: 'Date and price are agreed in a single phone call or message.' },
+      { icon: 'mdi:calendar-check', title: 'Weekend availability', text: 'We operate on Saturdays, and on Sundays by agreement. Urgent transport is also available outside working hours.' },
     ],
   },
   how: {
     title: 'Order process',
     steps: [
-      { title: 'Contact', text: 'By phone, WhatsApp or email. State what needs to be transported, from where and to where.' },
-      { title: 'Price and date', text: 'The price is set in advance based on distance and cargo volume.' },
-      { title: 'Transport', text: 'The cargo is collected at the agreed time and delivered to the destination.' },
+      { title: 'Contact', text: 'Contact us by phone, WhatsApp or email and tell us what needs to be transported, from where and to where.' },
+      { title: 'Price and date', text: 'You receive the price in advance. It is based on the distance and the volume of cargo.' },
+      { title: 'Transport', text: 'We collect the cargo at the agreed time and deliver it to the address you specified.' },
     ],
   },
   vehicle: {
@@ -78,7 +78,7 @@ const en: Dict = {
   },
   price: {
     title: 'Price and payment',
-    text: 'Price by agreement. It depends on the distance, cargo volume and the need for help with loading. A quote is provided in advance.',
+    text: 'The price is set individually, based on the distance, the volume of cargo and whether help with loading is required. You receive a quote before the transport.',
     payTitle: 'Payment options',
     pay: [
       { icon: 'mdi:cash', label: 'Cash' },
@@ -88,7 +88,7 @@ const en: Dict = {
   },
   area: {
     title: 'Service area',
-    text: 'The vehicle is based in Humenné. Delivery in Humenné and the surroundings, including Snina, Vranov nad Topľou, Strážske, Michalovce, Stropkov, Svidník, Prešov and Košice. Transport anywhere in Slovakia by agreement.',
+    text: 'The vehicle is based in Humenné. We deliver in Humenné and the surrounding area, including Snina, Vranov nad Topľou, Strážske, Michalovce, Stropkov, Svidník, Prešov and Košice. Transport to other parts of Slovakia by agreement.',
     base: 'Base',
     whole: 'Anywhere in Slovakia by agreement',
     domestic: 'Domestic transport only.',
@@ -96,7 +96,7 @@ const en: Dict = {
   },
   contact: {
     title: 'Contact',
-    lead: 'Quotes and bookings by phone, WhatsApp or email.',
+    lead: 'You can request a quote or book a date by phone, WhatsApp or email.',
     phoneLabel: 'Phone',
     phoneHours: 'daily from 7:00 to 19:00',
     whatsappLabel: 'WhatsApp',
@@ -105,10 +105,10 @@ const en: Dict = {
     hoursTitle: 'Operating hours',
     hours: ['Monday to Saturday', 'Sunday by agreement', 'Urgent transport also outside working hours by agreement'],
     languageNote:
-      'Phone calls are in Slovak only. If you do not speak Slovak, please send a WhatsApp message or an email in English.',
+      'Phone calls are in Slovak only. If you do not speak Slovak, please contact us via WhatsApp or email in English.',
     form: {
       title: 'Free quote request',
-      hint: 'Fill in the known details. The message is sent via WhatsApp or email. No data is stored on this website.',
+      hint: 'Fill in the details you know. The message is sent via WhatsApp or email, and no data is stored on this website.',
       from: 'From',
       fromPh: 'e.g. Humenné',
       to: 'To',
@@ -121,11 +121,11 @@ const en: Dict = {
       sendWhatsapp: 'Send via WhatsApp',
       sendEmail: 'Send by email',
       emailSubject: 'Quote request for transport',
-      emailFallback: 'If no email app opened, the message can be sent via Gmail or copied and sent to',
+      emailFallback: 'If your email app did not open, you can send the message via Gmail or copy it and send it to',
       openGmail: 'Open in Gmail',
       copy: 'Copy message',
       copied: 'Copied',
-      noscript: 'The form needs JavaScript. Please call or send a WhatsApp message.',
+      noscript: 'The form requires JavaScript. Please call us or send a WhatsApp message.',
     },
   },
   footer: {

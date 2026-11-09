@@ -13,7 +13,7 @@ const t = useTranslations(lang);
     <div class="reveal">
       <h2 id="price-title" class="section-title">{t.price.title}</h2>
       <p class="section-lead">{t.price.text}</p>
-      <div class:list={['price__cta', { 'price__cta--en': lang === 'en' }]}>
+      <div class:list={['price__cta', 'btn-row', { 'price__cta--en': lang === 'en' }]}>
         <a class="btn btn--red" href={business.phoneHref}>
           <Icon name="mdi:phone" aria-hidden="true" /><span>{business.phone}</span>
         </a>
@@ -46,9 +46,6 @@ const t = useTranslations(lang);
     align-items: center;
   }
   .price__cta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
     margin-top: 28px;
   }
   /* English: WhatsApp first (René speaks Slovak only). */

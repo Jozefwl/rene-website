@@ -52,7 +52,7 @@ const stage = { width: 600, height: 600, finger: 36, gap: 11, solid: 60, reach: 
         }
       </ul>
 
-      <div class:list={['hero__cta', { 'hero__cta--en': lang === 'en' }]}>
+      <div class:list={['hero__cta', 'btn-row', { 'hero__cta--en': lang === 'en' }]}>
         <a class="btn btn--red hero__phone" href={business.phoneHref}>
           <Icon name="mdi:phone" aria-hidden="true" />
           <span>{business.phone}</span>
@@ -224,10 +224,10 @@ const stage = { width: 600, height: 600, finger: 36, gap: 11, solid: 60, reach: 
   }
 
   /* ---------- Buttons ---------- */
+  /* The hero column is too narrow for both big buttons side by side,
+     so they stack as one column, both as wide as the wider one. */
   .hero__cta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
+    grid-auto-flow: row;
     margin-top: clamp(26px, 3vw, 36px);
     animation: fade-up 0.5s ease-out 1.7s both;
   }
@@ -521,11 +521,6 @@ const stage = { width: 600, height: 600, finger: 36, gap: 11, solid: 60, reach: 
     }
     .hero__cta {
       margin-top: 26px;
-    }
-  }
-  @media (max-width: 520px) {
-    .hero__cta .btn {
-      width: 100%;
     }
   }
 </style>

@@ -15,7 +15,7 @@ import en from '../i18n/en';
       <h1 class="section-title">{sk.notFound.title}</h1>
       <p class="section-lead">{sk.notFound.text}</p>
       <p class="nf__en" lang="en">{en.notFound.title}. {en.notFound.text}</p>
-      <div class="nf__cta">
+      <div class="nf__cta btn-row">
         <a class="btn btn--red" href="/">{sk.notFound.back}</a>
         <a class="btn btn--outline" href="/en/" lang="en">{en.notFound.back}</a>
       </div>
@@ -34,9 +34,6 @@ import en from '../i18n/en';
     color: var(--muted);
   }
   .nf__cta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
     margin-top: 28px;
   }
 </style>

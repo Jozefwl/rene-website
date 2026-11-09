@@ -96,7 +96,7 @@ const cards = lang === 'en' ? [waCard, mailCard, phoneCard] : [phoneCard, waCard
             <input name="name" type="text" autocomplete="name" />
           </label>
         </div>
-        <div class="quote__actions">
+        <div class="quote__actions btn-row">
           <button class="btn btn--whatsapp" type="submit" value="whatsapp">
             <Icon name="mdi:whatsapp" aria-hidden="true" /><span>{f.sendWhatsapp}</span>
           </button>
@@ -106,7 +106,7 @@ const cards = lang === 'en' ? [waCard, mailCard, phoneCard] : [phoneCard, waCard
         </div>
         <div class="quote__fallback" data-email-fallback hidden>
           <p>{f.emailFallback} <a href={`mailto:${business.email}`}>{business.email}</a>.</p>
-          <div class="quote__fallback-actions">
+          <div class="quote__fallback-actions btn-row">
             <a class="btn btn--outline btn--sm" href="#" target="_blank" rel="noopener" data-gmail>
               <Icon name="mdi:gmail" aria-hidden="true" /><span>{f.openGmail}</span>
             </a>
@@ -342,9 +342,6 @@ const cards = lang === 'en' ? [waCard, mailCard, phoneCard] : [phoneCard, waCard
     background: var(--white);
   }
   .quote__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
     margin-top: 22px;
   }
   .quote__fallback {
@@ -356,9 +353,6 @@ const cards = lang === 'en' ? [waCard, mailCard, phoneCard] : [phoneCard, waCard
     font-size: 0.93rem;
   }
   .quote__fallback-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
     margin-top: 12px;
   }
   .quote__noscript {
@@ -374,9 +368,6 @@ const cards = lang === 'en' ? [waCard, mailCard, phoneCard] : [phoneCard, waCard
   @media (max-width: 520px) {
     .quote__grid {
       grid-template-columns: 1fr;
-    }
-    .quote__actions .btn {
-      width: 100%;
     }
   }
 </style>
