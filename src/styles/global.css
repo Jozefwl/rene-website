@@ -121,12 +121,15 @@ p {
   font-size: 0.92rem;
 }
 
-/* A row of buttons on a grid: every column is as wide as the widest button,
-   every button as tall as the tallest. Stacks into one full-width column on phones. */
+/* A row of buttons on a grid: every button as wide as the widest one and as tall
+   as the tallest. --btn-w is the widest button's natural width, set by the script
+   in Base.astro (CSS alone cannot size equal columns to the widest item in Chrome).
+   .is-stacked: the script found no room for the buttons side by side.
+   Stacks into one full-width column on phones. */
 .btn-row {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 1fr;
+  grid-auto-columns: var(--btn-w, 1fr);
   grid-auto-rows: 1fr;
   gap: 12px;
   width: fit-content;
@@ -135,6 +138,10 @@ p {
 
 .btn-row > .btn {
   width: 100%;
+}
+
+.btn-row.is-stacked {
+  grid-auto-flow: row;
 }
 
 @media (max-width: 640px) {

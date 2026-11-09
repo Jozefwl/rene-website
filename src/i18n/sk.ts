@@ -137,6 +137,8 @@ const sk = {
     privacy: 'Ochrana osobných údajov',
     rights: 'Všetky práva vyhradené.',
     backToTop: 'Na začiatok',
+    developedBy: 'Vývoj',
+    version: 'Verzia',
   },
   sticky: {
     call: 'Zavolať',

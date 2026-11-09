@@ -136,6 +136,8 @@ const en: Dict = {
     privacy: 'Privacy policy',
     rights: 'All rights reserved.',
     backToTop: 'Back to top',
+    developedBy: 'Developed by',
+    version: 'Version',
   },
   sticky: {
     call: 'Call',

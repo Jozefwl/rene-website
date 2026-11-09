@@ -87,6 +87,48 @@ const ogImage = new URL('/og-image.png', site).href;
       } else {
         items.forEach((el) => el.classList.add('is-visible'));
       }
+
+      // Button rows (.btn-row): every button gets the widest button's natural width.
+      // If they don't fit side by side, the row stacks into one column.
+      function sizeButtonRow(row: HTMLElement) {
+        const btns = [...row.children] as HTMLElement[];
+        let widest = 0;
+        for (const b of btns) {
+          b.style.width = 'max-content';
+          b.style.whiteSpace = 'nowrap';
+          widest = Math.max(widest, b.getBoundingClientRect().width);
+          b.style.width = '';
+          b.style.whiteSpace = '';
+        }
+        if (!widest) return; // hidden row, sized again once it appears
+        const w = Math.ceil(widest);
+        row.style.setProperty('--btn-w', `${w}px`);
+        row.classList.remove('is-stacked');
+        const gap = parseFloat(getComputedStyle(row).columnGap) || 0;
+        // Room comes from the nearest ancestor with a box (the hero text is display: contents on mobile).
+        let box = row.parentElement;
+        while (box && getComputedStyle(box).display === 'contents') box = box.parentElement;
+        const room = box?.clientWidth ?? Infinity;
+        if (btns.length * w + (btns.length - 1) * gap > room) row.classList.add('is-stacked');
+      }
+      const rows = document.querySelectorAll<HTMLElement>('.btn-row');
+      const sizeAll = () => rows.forEach(sizeButtonRow);
+      sizeAll();
+      document.fonts?.ready.then(sizeAll);
+      let resizeTimer = 0;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(sizeAll, 100);
+      });
+      // Catches rows that start hidden (the email fallback) once they appear.
+      if ('ResizeObserver' in window) {
+        const ro = new ResizeObserver((entries) => {
+          for (const e of entries) {
+            e.target.querySelectorAll<HTMLElement>(':scope > .btn-row').forEach(sizeButtonRow);
+          }
+        });
+        rows.forEach((row) => row.parentElement && ro.observe(row.parentElement));
+      }
     </script>
   </body>
 </html>

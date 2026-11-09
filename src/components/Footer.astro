@@ -3,6 +3,8 @@ import { Icon } from 'astro-icon/components';
 import Logo from './Logo.astro';
 import { business } from '../data/business';
 import { routes, useTranslations, type Lang } from '../i18n';
+// Set by the release workflow (npm version) before the image is built, so it matches the deployed image tag.
+import { version } from '../../package.json';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
@@ -43,7 +45,13 @@ const socials = [
   </div>
   <div class="container footer__bottom">
     <span>© {year} {business.brand}. {t.footer.rights}</span>
-    <a href={routes.privacy[lang]}>{t.footer.privacy}</a>
+    <span class="footer__links">
+      <a href={routes.privacy[lang]}>{t.footer.privacy}</a>
+      <span>
+        {t.footer.developedBy}: <a href="https://waldhauser.sk" target="_blank" rel="noopener">waldhauser.sk</a>
+      </span>
+      <span title={`${t.footer.version} ${version}`}>v{version}</span>
+    </span>
   </div>
 </footer>
 
@@ -98,6 +106,11 @@ const socials = [
     padding-block: 20px;
     color: #8d9198;
     font-size: 0.85rem;
+  }
+  .footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
   }
   .footer__bottom a {
     color: #c9ccd1;
