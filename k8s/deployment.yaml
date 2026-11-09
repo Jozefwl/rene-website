@@ -5,7 +5,7 @@ metadata:
   namespace: apps
   labels:
     app: rene-website
-    version: 0.1.0
+    version: 0.1.1
 spec:
   replicas: 2
   selector:
@@ -20,7 +20,7 @@ spec:
     metadata:
       labels:
         app: rene-website
-        version: 0.1.0
+        version: 0.1.1
     spec:
       nodeSelector:
         power: low
@@ -28,7 +28,7 @@ spec:
         - name: harbor-credentials
       containers:
         - name: rene-website
-          image: harbor.waldoserver.top/cloud/rene-website:0.1.0
+          image: harbor.waldoserver.top/cloud/rene-website:0.1.1
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
